@@ -8,6 +8,7 @@
 #preview-date{clear:both;font-size:18px;padding-top:6px}td textarea[hidden]{display:none}.duty-select{width:100%;min-width:0;min-height:52px;padding:8px 2px;margin:0;font-size:16px;border:1px solid #a6b4c2;border-radius:6px;background:#fff;color:#253f59}td[data-leave=true]{background:#fff0ee}td[data-leave=true] .duty-select,td[data-leave=true] textarea{color:#b42318;background:#fff0ee;font-weight:700;border-color:#c96d66}td[data-leave=true] .duty-select:disabled{color:#b42318;opacity:1}td textarea:not([hidden]){margin-top:0}.duty-select{margin-top:4px;min-height:44px}header{margin-bottom:20px}@media print{.duty-select{display:none}}
 
 #rows th,#rows td,#rows textarea,#rows textarea:read-only{background:var(--row-color,#fff)}#rows td[data-leave=true],#rows td[data-leave=true] textarea,#rows td[data-leave=true] .duty-select{background:#fff0ee}.people-color{width:100%;font-size:16px;min-height:44px;grid-column:1/-1}#people-list .people-row{border-radius:6px;padding:8px;margin-bottom:10px}#image-pages{display:flex;align-items:center;justify-content:center;gap:10px;margin:8px 0}#image-pages[hidden]{display:none}
+#rows .period-cell{text-align:center;vertical-align:middle;font-size:15px;padding:8px 2px;font-weight:600}#rows .name-cell{vertical-align:middle}thead th:nth-child(2){font-size:14px;padding:12px 2px;text-align:center}#rows tr:nth-child(2n)>*{border-bottom:2px solid #8c9cad}#rows .name-cell{border-bottom:2px solid #8c9cad}#rows tr:last-child>*{border-bottom:0}
 </style></head><body><main>
 <header><h1 id="duty-title">duty</h1></header>
 <label for="date">日期</label><div class="date-row"><input type="date" id="date"><button id="today" type="button">今天</button></div><p id="full-date" class="full-date"></p>
@@ -18,7 +19,7 @@
 <div id="conflict" class="notice error" hidden role="alert"><strong>另一人剛修改了這份表。</strong>你剛填的內容仍在，未有覆蓋任何記錄。<div class="stack"><button id="use-other" type="button">查看對方的修改</button><button id="use-mine" type="button">保留我填的內容</button></div></div>
 <section id="table-section" hidden>
 <div id="date-notice" class="notice" hidden><strong id="notice-title"></strong><button id="edit-past" type="button" class="wide secondary">修改這天</button></div>
-<div class="table-wrap"><table><caption id="table-caption">值班表</caption><colgroup><col style="width:28%"><col style="width:36%"><col style="width:36%"></colgroup><thead><tr><th scope="col">姓名</th><th scope="col">上午<small>AM</small></th><th scope="col">下午<small>PM</small></th></tr></thead><tbody id="rows"></tbody></table></div>
+<div class="table-wrap"><table><caption id="table-caption">值班表</caption><colgroup><col style="width:26%"><col style="width:14%"><col style="width:60%"></colgroup><thead><tr><th scope="col">Name</th><th scope="col">AM/PM</th><th scope="col">Duty</th></tr></thead><tbody id="rows"></tbody></table></div>
 <div class="under-table"><span id="completion">已填 0 / 20 格</span><button id="undo" type="button" disabled>撤銷上一步</button></div>
 
 </section>
@@ -43,7 +44,7 @@ let NAMES=[];
 const PALETTE={blue:{label:'淺藍',fill:'#dcebf3'},rose:{label:'淺紅',fill:'#f5d6d6'},purple:{label:'淺紫',fill:'#e8ddf0'}};
 let nameColors={};
 const colorFor=name=>PALETTE[nameColors[name]]?.fill||(['Raiden','Vikki','Tony','Cindy'].includes(name)?PALETTE.rose.fill:['Selina','Selena','Victor','Harry'].includes(name)?PALETTE.purple.fill:PALETTE.blue.fill);
-function applyNameColors(){document.querySelectorAll('#rows tr').forEach((row,i)=>{row.style.setProperty('--row-color',colorFor(NAMES[i]));});}
+function applyNameColors(){document.querySelectorAll('#rows tr').forEach((row,i)=>{row.style.setProperty('--row-color',colorFor(NAMES[Number(row.dataset.personIndex)]));});}
 const S={date:'',target:'',record:null,dates:[],phase:'loading',dirty:false,req:null,inflight:null,timer:null,pastEditing:false,undo:[],conflict:null,loadError:false,importing:false,backup:'',previewing:false};
 let privateKey='',previewFile=null,focusSnapshot=null,loadSequence=0;
 const clone=x=>JSON.parse(JSON.stringify(x));
@@ -59,7 +60,13 @@ const requestId=()=>{const bytes=new Uint8Array(20);crypto.getRandomValues(bytes
 let leaveButtons=[],fields=[],all=[];
 function renderFields(duties){
  NAMES=Object.keys(duties);$('rows').replaceChildren();leaveButtons=[];
- fields=NAMES.map(name=>{const row=$('rows').insertRow(),th=document.createElement('th');th.scope='row';th.textContent=name;row.append(th);return ['上午','下午'].map(period=>{const el=document.createElement('textarea');el.rows=1;el.maxLength=2000;el.placeholder='填寫安排';el.spellcheck=false;el.autocomplete='off';el.setAttribute('aria-label',name+' '+period);el.enterKeyHint='enter';const cell=row.insertCell();cell.append(el);const select=document.createElement('select');select.className='duty-select';select.setAttribute('aria-label',name+' '+period+' 選擇安排');select.add(new Option('選項',''));select.add(new Option('Leave','leave'));select.add(new Option('清空','clear'));select.disabled=true;select.onchange=()=>selectDuty(el,select);cell.append(select);leaveButtons.push({button:select,field:el});return el;});});
+ fields=NAMES.map((name,i)=>['上午','下午'].map((period,j)=>{
+  const row=$('rows').insertRow();row.dataset.personIndex=String(i);
+  if(j===0){const th=document.createElement('th');th.scope='rowgroup';th.rowSpan=2;th.className='name-cell';th.textContent=name;row.append(th);}
+  const periodCell=document.createElement('th');periodCell.scope='row';periodCell.className='period-cell';periodCell.textContent=j===0?'AM':'PM';row.append(periodCell);
+  const el=document.createElement('textarea');el.rows=1;el.maxLength=2000;el.placeholder='填寫安排';el.spellcheck=false;el.autocomplete='off';el.setAttribute('aria-label',name+' '+period);el.enterKeyHint='enter';
+  const cell=row.insertCell();cell.append(el);const select=document.createElement('select');select.className='duty-select';select.setAttribute('aria-label',name+' '+period+' 選擇安排');select.add(new Option('選項',''));select.add(new Option('Leave','leave'));select.add(new Option('清空','clear'));select.disabled=true;select.onchange=()=>selectDuty(el,select);cell.append(select);leaveButtons.push({button:select,field:el});return el;
+ }));
 all=fields.flat();bindFields();setValues(duties);applyNameColors();
 }
 function fit(el){el.style.height='56px';el.style.height=Math.max(56,el.scrollHeight+2)+'px';}
@@ -171,15 +178,35 @@ $('image-next').onclick=()=>{if(previewIndex<previewImages.length-1){previewInde
 function prepareImage(){previewImages=makeImages();previewIndex=0;showImagePage();}
 function makeImages(){
  const c=document.createElement('canvas'),g=c.getContext('2d');if(!g)throw Error('Canvas unavailable');
- const widths=[236,382,382],font='30px Arial,sans-serif',maxLines=210;g.font=font;
+ const widths=[214,140,646],font='30px Arial,sans-serif',maxUnits=210;g.font=font;
  function wrap(s,w){const out=[];let line='';for(const ch of Array.from(s.trim()||'—')){if(ch==='\n'){out.push(line);line='';}else if(line&&g.measureText(line+ch).width>w){out.push(line);line=ch;}else line+=ch;}out.push(line);return out;}
  const pages=[];let page=[],used=0;
- NAMES.forEach((name,i)=>{const row=[name,...fields[i].map(el=>el.value)].map((s,j)=>wrap(s,widths[j]-32)),length=Math.max(...row.map(x=>x.length));let offset=0;
-  while(offset<length){const space=maxLines-used;if(space<2){pages.push(page);page=[];used=0;continue;}const count=Math.min(length-offset,space),lines=row.map((x,j)=>j===0&&offset>0?wrap(name+'（續）',widths[0]-32):x.slice(offset,offset+count)),height=Math.max(76,Math.max(...lines.map(x=>x.length))*40+30);if(used+Math.ceil(height/40)>maxLines&&page.length){pages.push(page);page=[];used=0;continue;}page.push({name,index:i,lines,height});used+=Math.ceil(height/40);offset+=count;if(offset<length){pages.push(page);page=[];used=0;}}
- });if(page.length)pages.push(page);
- return pages.map((rows,pi)=>{c.width=1064;c.height=232+rows.reduce((a,r)=>a+r.height,0);if(c.height>9000)throw Error('Image page exceeds safe height');g.fillStyle='#fff';g.fillRect(0,0,c.width,c.height);g.fillStyle='#172b40';g.textBaseline='top';g.font='bold 40px Arial,sans-serif';g.fillText(dutyTitle(S.date)+(pages.length>1?' · '+(pi+1)+'/'+pages.length:''),32,25);g.font=font;g.fillText(fullDate(S.date),32,80);let y=132;
- const draw=(lines,height,name,index,header)=>{let x=32;lines.forEach((ls,j)=>{const leave=!header&&j>0&&isLeave(fields[index][j-1].value);g.fillStyle=header?'#e8eef5':leave?'#fff0ee':colorFor(name);g.fillRect(x,y,widths[j],height);g.lineWidth=1.5;g.strokeStyle='#9aa9b8';g.strokeRect(x,y,widths[j],height);g.fillStyle=leave?'#b42318':'#172b40';g.font=(header||j===0||leave?'bold ':'')+font;ls.forEach((t,k)=>g.fillText(t,x+16,y+15+k*40));x+=widths[j];});y+=height;};
- draw([['姓名'],['上午 AM'],['下午 PM']],76,'',0,true);rows.forEach(r=>draw(r.lines,r.height,r.name,r.index,false));const url=c.toDataURL('image/png');if(!url.startsWith('data:image/png;base64,'))throw Error('Image generation failed');return url;});
+ function nextPage(){if(page.length)pages.push(page);page=[];used=0;}
+ NAMES.forEach((name,i)=>{
+  const nameLines=wrap(name,widths[0]-32),minHeight=Math.max(76,Math.ceil((nameLines.length*40+30)/2));
+  fields[i].forEach((el,period)=>{const lines=wrap(el.value,widths[2]-32);let offset=0;
+   while(offset<lines.length){const space=maxUnits-used,capacity=Math.floor((space*40-30)/40);if(capacity<1||space*40<minHeight){nextPage();continue;}
+    const count=Math.min(lines.length-offset,capacity),part=lines.slice(offset,offset+count),height=Math.max(minHeight,part.length*40+30),units=Math.ceil(height/40);
+    if(used+units>maxUnits){nextPage();continue;}
+    page.push({name,index:i,period,continued:offset>0,lines:part,height});used+=units;offset+=count;if(offset<lines.length)nextPage();
+   }
+  });
+ });nextPage();
+ return pages.map((rows,pi)=>{
+  c.width=1064;c.height=232+rows.reduce((a,r)=>a+r.height,0);if(c.height>9000)throw Error('Image page exceeds safe height');
+  g.fillStyle='#fff';g.fillRect(0,0,c.width,c.height);g.fillStyle='#172b40';g.textBaseline='top';g.font='bold 40px Arial,sans-serif';g.fillText(dutyTitle(S.date)+(pages.length>1?' · '+(pi+1)+'/'+pages.length:''),32,25);g.font=font;g.fillText(fullDate(S.date),32,80);let y=132;
+  function cell(x,top,w,height,lines,fill,bold=false,leave=false){g.fillStyle=fill;g.fillRect(x,top,w,height);g.lineWidth=1.5;g.strokeStyle='#9aa9b8';g.strokeRect(x,top,w,height);g.fillStyle=leave?'#b42318':'#172b40';g.font=(bold?'bold ':'')+font;const textTop=top+Math.max(15,(height-lines.length*40)/2);lines.forEach((t,k)=>g.fillText(t,x+16,textTop+k*40));}
+  let x=32;[['Name'],['AM/PM'],['Duty']].forEach((ls,j)=>{cell(x,y,widths[j],76,ls,'#e8eef5',true);x+=widths[j];});y+=76;
+  for(let k=0;k<rows.length;){let end=k+1;while(end<rows.length&&rows[end].index===rows[k].index)end++;
+   const r=rows[k],height=rows.slice(k,end).reduce((a,r)=>a+r.height,0),continuation=r.period!==0||r.continued;
+   cell(32,y,widths[0],height,wrap(r.name+(continuation?'（續）':''),widths[0]-32),colorFor(r.name),true);
+   for(let j=k;j<end;j++){const item=rows[j],leave=isLeave(fields[item.index][item.period].value);
+    cell(32+widths[0],y,widths[1],item.height,[item.period===0?'AM':'PM'],colorFor(item.name),true);
+    cell(32+widths[0]+widths[1],y,widths[2],item.height,item.lines,leave?'#fff0ee':colorFor(item.name),leave,leave);y+=item.height;
+   }k=end;
+  }
+  const url=c.toDataURL('image/png');if(!url.startsWith('data:image/png;base64,'))throw Error('Image generation failed');return url;
+ });
 }
 $('preview-open').onclick=async()=>{
  if(S.previewing||!await flush())return;
