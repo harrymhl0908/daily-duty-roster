@@ -154,7 +154,7 @@ addEventListener('online',()=>{if(S.phase==='error')say('連線已恢復，請�
 async function checkFresh(){
  if(S.previewing||S.phase!=='ready'||S.dirty||S.req||S.importing||document.querySelector('dialog[open]'))return;
  const date=S.date,revision=S.record?.revision;if(!date)return;
- try{const r=await rpc('getRoster',date);if(S.phase!=='ready'||S.dirty||S.date!==date||S.record.revision!==revision)return;S.dates=r.dates;rebuildDates();if(r.record.revision!==revision||JSON.stringify(Object.keys(r.record.duties))!==JSON.stringify(NAMES)){S.record=r.record;S.undo=[];renderFields(r.record.duties);savedStatus();say('已載入最新修改。');}update();}catch(e){say('暫時未能更新，畫面可能不是最新版本。請確認連線後再複製。',true);}
+ try{const [r,people]=await Promise.all([rpc('getRoster',date),rpc('getPeople')]);if(S.phase!=='ready'||S.dirty||S.date!==date||S.record.revision!==revision)return;nameColors=people.colors||{};applyNameColors();S.dates=r.dates;rebuildDates();if(r.record.revision!==revision||JSON.stringify(Object.keys(r.record.duties))!==JSON.stringify(NAMES)){S.record=r.record;S.undo=[];renderFields(r.record.duties);savedStatus();say('已載入最新修改。');}update();}catch(e){say('暫時未能更新，畫面可能不是最新版本。請確認連線後再複製。',true);}
 }
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)checkFresh();});
 let previewImages=[],previewIndex=0;
@@ -185,7 +185,7 @@ $('preview-open').onclick=async()=>{
  if(S.previewing||!await flush())return;
  S.previewing=true;update();
  try{
- const latest=await rpc('getRoster',S.date);
+ const [latest,people]=await Promise.all([rpc('getRoster',S.date),rpc('getPeople')]);nameColors=people.colors||{};applyNameColors();
  if(latest.record.revision!==S.record.revision||JSON.stringify(Object.keys(latest.record.duties))!==JSON.stringify(NAMES)){await load(S.date);say('另一人剛修改了這份表。請核對最新內容，再按「預覽及複製」。');return;}
  $('preview-date').textContent=dutyTitle(S.date);const empty=all.filter(el=>!el.value.trim()).length;
  $('preview-warning').textContent=empty?'未填：'+empty+' 格':'';$('preview-warning').hidden=!empty;
