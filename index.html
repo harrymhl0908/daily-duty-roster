@@ -25,12 +25,14 @@ header{padding-bottom:16px;margin-bottom:18px}.brand-line{margin-bottom:10px}.sa
 .quick-tools{display:flex;align-items:flex-start;gap:14px;margin-top:8px}.quick-tools>button{white-space:nowrap;min-height:48px;font-size:16px}.quick-tools details{flex:1;margin:0}.quick-tools summary{font-size:16px}.guide-body{font-size:16px;line-height:1.65}.guide-body ol{padding-left:22px}.guide-body li{margin-bottom:9px}#quick-guide[open]{position:relative}#quick-guide[open] .guide-body{margin-left:0}#people-list{padding:0;list-style:none}#people-list .people-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:12px}#people-list .member-heading{grid-column:1/-1;display:flex;justify-content:space-between;gap:8px;overflow-wrap:anywhere;font-weight:600}#people-list .member-status{font-size:14px;white-space:nowrap;font-weight:400}#people-list .people-row[data-inactive=true]{background:#edf0ed!important;border:1px dashed #9aac9f}#people-list .people-row button{font-size:16px;padding:8px 3px;min-height:44px}#people-list .member-toggle{grid-column:span 2}#people-list .member-remove{color:#9b3026}#people-list .people-color{grid-column:auto;width:100%;min-width:0}#people-count{font-size:15px;color:#526761}#people-dialog .dialog-actions{position:sticky;bottom:-20px;background:#fff;padding:12px 0;margin-bottom:0}#people-dialog .member-add{margin-bottom:18px}#people-dialog h2{margin-bottom:8px}#people-dialog p{line-height:1.6}
 @media(max-width:440px){.quick-tools{flex-wrap:wrap}.quick-tools details{min-width:135px}.quick-tools:has(details[open]){display:block}.quick-tools:has(details[open]) details{margin-top:4px}}
 @media print{.quick-tools{display:none}}
+.roster-filter{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin:10px 0 0}.roster-filter button{font-size:16px;min-height:44px;padding:7px 3px}.roster-filter button[aria-pressed=true]{background:#173c3a;color:#fff;border-color:#173c3a}#filter-note{font-size:14px;line-height:1.5;margin:8px 0}#rows tr[hidden]{display:none}@media print{.roster-filter,#filter-note{display:none}#rows tr[hidden]{display:table-row}}
+main{padding-top:calc(18px + env(safe-area-inset-top))}header{padding-bottom:10px;margin-bottom:12px}.brand-line{margin-bottom:6px}.full-date{margin-bottom:8px}
 </style></head><body><main>
 <header><div class="brand-line"><span class="brand-mark" aria-hidden="true">A</span><span>TEAM A · DAILY DUTY</span></div><h1 id="duty-title">duty</h1></header>
 <label for="date">日期</label><div class="date-row"><input type="date" id="date"><button id="today" type="button">今天</button></div><p id="full-date" class="full-date"></p>
 <details class="history"><summary>已儲存日期</summary><label for="history" class="sr-only">選擇已儲存日期</label><select id="history"><option value="">正在載入舊表…</option></select></details>
 <div class="quick-tools"><button id="people-quick" type="button" disabled>管理成員</button><details id="quick-guide"><summary>30 秒上手</summary><div class="guide-body">
-<ol><li><strong>選日期</strong>：星期五再選 GA／no GA。</li><li><strong>派工作</strong>：在 AM／PM 下拉選單加入工作；可加入多項，亦可直接輸入或修改。</li><li><strong>核對漏項</strong>：按「尚欠名額」查看未分配工作。全部必需名額有人負責，才顯示「當日工作已全部分配」。</li><li><strong>等儲存，再分享</strong>：確認「已儲存」後按「預覽及複製」，複製或分享圖片到 Signal；多張圖片要逐張處理。</li></ol>
+<ol><li><strong>選日期</strong>：星期五選 GA／no GA，儲存後再開會記住。</li><li><strong>派工作</strong>：下拉選單可加入多項，亦可直接打字。按「AM 未填／PM 未填」找未填的人；按「全部」看全員。</li><li><strong>核對漏項</strong>：按「尚欠名額」查看未分配工作。全部必需名額有人負責，才顯示「當日工作已全部分配」。</li><li><strong>等儲存，再分享</strong>：確認「已儲存」後按「預覽及複製」，複製或分享圖片到 Signal；多張圖片要逐張處理。</li></ol>
 <p><strong>改成員</strong>：按「管理成員」新增、暫停／恢復或移除，再按「儲存名單」。只影響尚未儲存的新日期；舊表不變。暫停不設到期日，要手動恢復。只請假一天，請在當天選「On leave」。</p>
 <p>pm WR 可重複分派；On leave、Post call off、If ERCP 不計入必需名額。工作核對不會判斷同事能否同時兼任。離開前請確認儲存成功；未儲存時強制關閉可能遺失修改。</p>
 </div></details></div>
@@ -41,6 +43,7 @@ header{padding-bottom:16px;margin-bottom:18px}.brand-line{margin-bottom:10px}.sa
 <section id="table-section" hidden>
 <div id="date-notice" class="notice" hidden><strong id="notice-title"></strong><button id="edit-past" type="button" class="wide secondary">修改這天</button></div>
 <div id="template-controls"><label id="template-label" for="day-template">當日工作模板</label><select id="day-template" aria-describedby="template-help"></select><p id="template-help" style="font-size:15px">星期五請選 GA／no GA；只核對所選模板，不改動已有安排。</p><div id="duty-coverage" class="notice" role="status" aria-live="polite"></div><details id="coverage-details"><summary id="coverage-summary">核對每項工作</summary><ul id="duty-checklist"></ul></details></div>
+<div class="roster-filter" role="group" aria-label="顯示名單"><button type="button" data-filter="all" aria-pressed="true">全部</button><button type="button" data-filter="am" aria-pressed="false">AM 未填</button><button type="button" data-filter="pm" aria-pressed="false">PM 未填</button></div><p id="filter-note" role="status" aria-live="polite" hidden></p>
 <div class="table-wrap"><table><caption id="table-caption">值班表</caption><colgroup><col style="width:26%"><col style="width:14%"><col style="width:60%"></colgroup><thead><tr><th scope="col">Name</th><th scope="col">AM/<wbr>PM</th><th scope="col">Duty</th></tr></thead><tbody id="rows"></tbody></table></div>
 <div class="under-table"><span id="completion">已填 0 / 20 格</span><button id="undo" type="button" disabled>撤銷上一步</button></div>
 
@@ -70,16 +73,19 @@ function applyNameColors(){document.querySelectorAll('#rows tr').forEach((row,i)
 const DUTY_TEMPLATES={"mon": {"Day time Duty": 1, "Day GA": 1, "Elective GA OT": 1, "CLN 1": 1, "Team D (pm) specialist cover": 1, "Team D (pm) OPD cover": 1, "EOGD": 1, "Team meeting": 1, "ERCP": 1, "CLN 2": 1, "EOT": 1}, "tue": {"Day time Duty": 1, "EOGD": 1, "OPD": 1, "L-block": 1, "ERCP": 1, "LA": 1, "EOT": 1}, "wed": {"Day time Duty": 1, "DS5 LA": 2, "Elective GA: liver (S)": 2, "Team D (am) specialist cover": 1, "Team D (am) OPD cover": 1, "EOGD": 1, "PR1": 1, "Additional new case clinic": 1, "FM training": 1, "Elective GA: lap chole (A)": 2, "Elective GA: lap chole (S)": 1, "Department meeting": 1, "EOT": 1}, "thu": {"Day time Duty": 1, "CLN 1": 1, "EOGD": 1, "ERCP": 1, "EUS": 1, "CLN 2": 1, "OPD": 1, "EOT": 1}, "fri-no": {"Day time Duty": 1, "CLN 1": 1, "EOGD": 1, "ERCP": 1, "CLN 2": 1, "EOT": 1, "OGD am": 1, "OGD pm": 1, "XR meeting": 1}, "fri-ga": {"Day time Duty": 1, "CLN 1": 1, "EOGD": 1, "ERCP": 1, "CLN 2": 1, "EOT": 1, "GA list": 2, "OGD pm": 1, "MS teaching": 1, "XR meeting": 1}};
 const TEMPLATE_LABELS={mon:'星期一',tue:'星期二',wed:'星期三',thu:'星期四','fri-no':'星期五（no GA）','fri-ga':'星期五（GA）'};
 const OPTIONAL_DUTIES=['pm WR','On leave','Post call off','If ERCP'];
-let selectedTemplate='';
+let selectedTemplate='',rosterFilter='all';
+const templateValue=()=>selectedTemplate.startsWith('fri-')?selectedTemplate:'';
+const sameRecord=(a,b)=>!!a&&!!b&&JSON.stringify(a.duties)===JSON.stringify(b.duties)&&(a.template||'')===(b.template||'');
+const draftMatches=r=>sameRecord({duties:values(),template:templateValue()},r);
 const normalizeDuty=s=>s.trim().replace(/\s+/g,' ').toLowerCase();
 function setupTemplate(){
  const day=new Date(S.date+'T12:00:00Z').getUTCDay();
- selectedTemplate=({1:'mon',2:'tue',3:'wed',4:'thu'})[day]||'';
+ selectedTemplate=day===5?(S.record.template||''):(({1:'mon',2:'tue',3:'wed',4:'thu'})[day]||'');
  const select=$('day-template');select.replaceChildren();
  if(day===5){select.add(new Option('請選星期五版本',''));for(const id of ['fri-no','fri-ga'])select.add(new Option(TEMPLATE_LABELS[id],id));}
  else if(selectedTemplate)select.add(new Option(TEMPLATE_LABELS[selectedTemplate],selectedTemplate));
  else select.add(new Option('此日期沒有提供模板',''));
- select.value=selectedTemplate;select.hidden=!!selectedTemplate;$('template-help').hidden=!!selectedTemplate;$('template-label').textContent=selectedTemplate?TEMPLATE_LABELS[selectedTemplate]+' · 工作核對':'當日工作模板';$('coverage-details').open=false;$('template-help').textContent=day===5?'請選 GA／no GA 版本；不改動已有安排。':'按所選模板核對，不改動已有安排。';populateDutyChoices();
+ select.value=selectedTemplate;const automatic=day!==5&&!!selectedTemplate;select.hidden=automatic;$('template-help').hidden=automatic;$('template-label').textContent=automatic?TEMPLATE_LABELS[selectedTemplate]+' · 工作核對':'當日工作模板';$('coverage-details').open=false;$('template-help').textContent=day===5?'GA／no GA 會隨這天的值班表儲存；不改動已有工作。':'按所選模板核對，不改動已有安排。';populateDutyChoices();
 }
 function populateDutyChoices(){
  const duties=Object.keys(DUTY_TEMPLATES[selectedTemplate]||{});
@@ -105,7 +111,7 @@ function coverageResult(){
 }
 function updateCoverage(){
  const rows=coverageResult(),box=$('duty-coverage'),jump=$('coverage-jump');$('duty-checklist').replaceChildren();
- $('day-template').disabled=S.phase==='loading'||S.previewing;
+ $('day-template').disabled=!canEdit();
  jump.disabled=!S.record||S.phase==='loading';jump.dataset.coverage='pending';
  if(!rows){box.dataset.coverage='pending';box.style.background='#fff7e7';box.textContent=S.date&&new Date(S.date+'T12:00:00Z').getUTCDay()===5?'請先選擇星期五 GA／no GA 版本，才能核對工作。':'此日期沒有工作模板，不能確認全部分配。';jump.textContent=new Date(S.date+'T12:00:00Z').getUTCDay()===5?'選擇模板 ↑':'未有工作模板 ↑';$('coverage-summary').textContent='核對每項工作';$('coverage-details').hidden=true;return;}
  $('coverage-details').hidden=false;
@@ -125,7 +131,7 @@ function showCoverage(){
 }
 $('coverage-jump').onclick=showCoverage;
 $('dock-status').onclick=()=>{const el=S.phase==='error'?$('load-warning'):S.phase==='conflict'?$('conflict'):$('status');el.scrollIntoView({block:'center'});if(S.phase==='error')$('retry').focus({preventScroll:true});};
-$('day-template').onchange=()=>{selectedTemplate=$('day-template').value;populateDutyChoices();update();};
+$('day-template').onchange=()=>{if(!canEdit()){$('day-template').value=selectedTemplate;return;}selectedTemplate=$('day-template').value;populateDutyChoices();changed();};
 const S={date:'',target:'',record:null,dates:[],phase:'loading',dirty:false,req:null,inflight:null,timer:null,pastEditing:false,undo:[],conflict:null,loadError:false,importing:false,backup:'',previewing:false};
 let privateKey='',previewFile=null,focusSnapshot=null,loadSequence=0;
 const clone=x=>JSON.parse(JSON.stringify(x));
@@ -150,6 +156,15 @@ function renderFields(duties){
  }));
 all=fields.flat();bindFields();setValues(duties);applyNameColors();setupTemplate();
 }
+function updateFilter(){
+ const period=rosterFilter==='am'?0:1,active=document.activeElement;
+ const missing=NAMES.filter((n,i)=>!fields[i][period].value.trim());
+ document.querySelectorAll('#rows tr').forEach(row=>{const i=Number(row.dataset.personIndex),show=rosterFilter==='all'||missing.includes(NAMES[i])||fields[i].includes(active);const wasHidden=row.hidden;row.hidden=!show;if(wasHidden&&show)fields[i].forEach(fit);});
+ document.querySelectorAll('[data-filter]').forEach(b=>{b.setAttribute('aria-pressed',String(b.dataset.filter===rosterFilter));b.disabled=S.phase==='loading'||S.previewing;});
+ $('filter-note').hidden=rosterFilter==='all';$('filter-note').textContent=(rosterFilter==='am'?'AM':'PM')+' 未填：'+missing.length+' 人。未填不代表有空；工作核對及圖片仍包括全員。';
+}
+document.querySelectorAll('[data-filter]').forEach(b=>b.onclick=()=>{rosterFilter=b.dataset.filter;updateFilter();});
+$('rows').addEventListener('focusout',()=>setTimeout(updateFilter,0));
 function fit(el){el.style.height='56px';el.style.height=Math.max(56,el.scrollHeight+2)+'px';}
 let resizeFrame;addEventListener('resize',()=>{cancelAnimationFrame(resizeFrame);resizeFrame=requestAnimationFrame(()=>all.forEach(fit));});
 function values(){return Object.fromEntries(NAMES.map((n,i)=>[n,fields[i].map(el=>el.value)]));}
@@ -168,7 +183,7 @@ async function rpc(name,...args){
 }
 function canEdit(){return !!S.record&&!S.previewing&&!['loading','error','conflict'].includes(S.phase)&&!S.importing&&(S.date>=nowDate()||S.pastEditing);}
 function update(){
- updateCoverage();
+ updateCoverage();updateFilter();
  const busy=S.phase==='loading'||S.phase==='saving'||S.importing||S.previewing;
  $('date').disabled=busy||S.phase==='conflict';$('today').disabled=busy||S.phase==='conflict';$('history').disabled=busy||S.phase==='conflict'||S.phase==='error';$('date').disabled||=S.phase==='error';$('today').disabled||=S.phase==='error';
  all.forEach(el=>el.readOnly=!canEdit());
@@ -186,23 +201,23 @@ function savedStatus(){status(S.record.revision?'已儲存 · '+when(S.record.up
 function errorState(error,loading=false){$('recover-edit').hidden=loading;S.phase='error';S.loadError=loading;$('error-title').textContent=loading?'暫時未能載入這天':'儲存尚未確認';$('error-detail').textContent=loading?'暫時連不到雲端，請稍後再試。':'請保留此頁，按「再試儲存」確認；關閉網頁可能會失去未儲存的修改。';$('retry').textContent=loading?'重新載入':'再試儲存';status(loading?'尚未載入值班表':'儲存尚未確認，請再試','error');update();}
 async function load(d){
  if(!validDate(d)){say('請選擇有效日期。',true);return false;}
- const sequence=++loadSequence;S.target=d;S.phase='loading';S.loadError=false;$('table-section').hidden=true;$('date').value=d;$('full-date').textContent=fullDate(d);$('duty-title').textContent=dutyTitle(d);document.title=dutyTitle(d);status('正在載入…','busy');update();
+ const sequence=++loadSequence;rosterFilter='all';S.target=d;S.phase='loading';S.loadError=false;$('table-section').hidden=true;$('date').value=d;$('full-date').textContent=fullDate(d);$('duty-title').textContent=dutyTitle(d);document.title=dutyTitle(d);status('正在載入…','busy');update();
  try{const [response,people]=await Promise.all([rpc('getRoster',d),rpc('getPeople')]);if(sequence!==loadSequence)return false;S.date=d;S.record=response.record;nameColors=people.colors||{};S.dates=response.dates;S.backup=response.lastBackup;S.phase='ready';S.dirty=false;S.req=null;S.conflict=null;S.pastEditing=false;S.undo=[];focusSnapshot=null;renderFields(S.record.duties);$('table-section').hidden=false;all.forEach(fit);$('table-caption').textContent='值班表：'+fullDate(d);rebuildDates();savedStatus();say('');update();return true;}catch(e){if(sequence===loadSequence)errorState(e,true);return false;}
 }
 function changed(action='edit'){
- S.nextAction=action;S.dirty=JSON.stringify(values())!==JSON.stringify(S.record.duties);clearTimeout(S.timer);
+ S.nextAction=action;S.dirty=!draftMatches(S.record);clearTimeout(S.timer);
  if(S.dirty){if(S.phase!=='saving')status('正在準備儲存…','busy');S.timer=setTimeout(()=>save(),1000);}else if(S.phase!=='saving')savedStatus();update();
 }
 async function save(){
  if(S.inflight)return S.inflight;
  if(S.phase==='conflict'||S.phase==='loading'||S.importing)return false;
  if(!S.dirty&&!S.req){savedStatus();return true;}
- if(!S.req)S.req={date:S.date,expectedRevision:S.record.revision,requestId:requestId(),duties:clone(values()),action:S.nextAction||'edit'};
+ if(!S.req)S.req={date:S.date,expectedRevision:S.record.revision,requestId:requestId(),duties:clone(values()),template:templateValue(),action:S.nextAction||'edit'};
  S.phase='saving';clearTimeout(S.timer);status('正在儲存…','busy');update();
  S.inflight=(async()=>{try{
   const response=await rpc('saveRoster',S.req);
   if(!response.ok){S.conflict=response.record;S.phase='conflict';S.req=null;status('未儲存：另一人剛修改了這份表','error');update();return false;}
-  S.record=response.record;S.dates=response.dates;S.req=null;S.phase='ready';S.dirty=JSON.stringify(values())!==JSON.stringify(S.record.duties);rebuildDates();
+  S.record=response.record;S.dates=response.dates;S.req=null;S.phase='ready';S.dirty=!draftMatches(S.record);rebuildDates();
   if(S.dirty){status('正在儲存餘下修改…','busy');S.timer=setTimeout(()=>save(),400);}else savedStatus();update();return true;
  }catch(e){errorState(e);return false;}finally{S.inflight=null;}})();return S.inflight;
 }
@@ -214,8 +229,8 @@ $('recover-edit').onclick=async()=>{
  if(S.inflight||S.loadError||S.phase!=='error')return;
  const b=$('recover-edit');b.disabled=true;
  try{const r=await rpc('getRoster',S.date),remote=r.record;
-  if(remote.revision!==S.record.revision&&JSON.stringify(remote.duties)!==JSON.stringify(S.req?.duties)){S.conflict=remote;S.phase='conflict';S.req=null;status('雲端已有新版本，請選擇保留的內容','error');update();return;}
-  S.record=remote;S.req=null;S.phase='ready';S.dirty=JSON.stringify(values())!==JSON.stringify(remote.duties);S.dates=r.dates;rebuildDates();status(S.dirty?'草稿保留，可繼續修改；修改後再儲存':'已核對雲端，內容已儲存',S.dirty?'busy':'saved');update();
+  if(remote.revision!==S.record.revision&&!sameRecord(remote,S.req)){S.conflict=remote;S.phase='conflict';S.req=null;status('雲端已有新版本，請選擇保留的內容','error');update();return;}
+  S.record=remote;S.req=null;S.phase='ready';S.dirty=!draftMatches(remote);S.dates=r.dates;rebuildDates();status(S.dirty?'草稿保留，可繼續修改；修改後再儲存':'已核對雲端，內容已儲存',S.dirty?'busy':'saved');update();
  }catch(e){say('暫時未能核對雲端。草稿仍保留，請保持此頁開啟。',true);}finally{b.disabled=false;}
 };
 $('edit-past').onclick=async()=>{if(S.pastEditing&&!await flush())return;S.pastEditing=!S.pastEditing;update();say(S.pastEditing?'現在可以修改 '+fullDate(S.date)+'。':'修改完成。');};
