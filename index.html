@@ -9,18 +9,30 @@
 
 #rows th,#rows td,#rows textarea,#rows textarea:read-only{background:var(--row-color,#fff)}#rows td[data-leave=true],#rows td[data-leave=true] textarea,#rows td[data-leave=true] .duty-select{background:#fff0ee}.people-color{width:100%;font-size:16px;min-height:44px;grid-column:1/-1}#people-list .people-row{border-radius:6px;padding:8px;margin-bottom:10px}#image-pages{display:flex;align-items:center;justify-content:center;gap:10px;margin:8px 0}#image-pages[hidden]{display:none}
 #rows .period-cell{text-align:center;vertical-align:middle;font-size:15px;padding:8px 2px;font-weight:600}#rows .name-cell{vertical-align:middle}thead th:nth-child(2){font-size:14px;padding:12px 2px;text-align:center}#rows tr:nth-child(2n)>*{border-bottom:2px solid #8c9cad}#rows .name-cell{border-bottom:2px solid #8c9cad}#rows tr:last-child>*{border-bottom:0}
+
+/* Refined clinical stationery: keep controls familiar and type comfortably large. */
+:root{--ink:#173c3a;--accent:#245c55;--paper:#faf9f6;--line:#d1dad5;color:#203b3a;background:var(--paper)}
+body{border-top:5px solid var(--ink)}main{max-width:740px;padding-top:28px}header{padding:0 0 22px;margin-bottom:24px;border-bottom:1px solid #c4b48d}.brand-line{display:flex;align-items:center;gap:10px;margin-bottom:14px;color:#46645f;font-size:12px;font-weight:700;letter-spacing:2.2px}.brand-mark{display:grid;place-items:center;width:31px;height:31px;background:var(--ink);color:#fff;font:22px Georgia,serif;letter-spacing:0;border-radius:4px}h1{font-family:Georgia,'Times New Roman',serif;font-size:34px;font-weight:500;letter-spacing:-.9px;color:var(--ink);margin:0}label,.label{color:#435c57;font-size:16px;font-weight:600}.full-date{font-size:17px;font-weight:500;color:#526761;margin-top:10px}button,.button,input[type=date],select{border-color:#bdccc5;border-radius:8px}input[type=date],select{background:#fff}button,.button{color:var(--ink)}.primary{background:var(--ink);border-color:var(--ink);color:white}.secondary{color:var(--ink);border-color:#94ada2}input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible,summary:focus-visible{outline-color:#245c55}button:not(:disabled):hover,.button:hover{filter:brightness(.96)}.save-state{min-height:34px;padding:5px 0;border:0;border-radius:0;background:transparent!important;font-size:14px;margin:13px 0 24px}.save-state::before{content:'';width:7px;height:7px;border-radius:50%;background:currentColor;flex-shrink:0}.save-state[data-state=error],.save-state[data-state=busy]{padding:10px;border:1px solid currentColor;border-radius:6px}.save-state[data-state=error]{background:#fff0ef!important}.save-state[data-state=busy]{background:#fff4df!important}
+#template-help{font-size:14px!important;color:#586b65;line-height:1.6;margin:9px 0 14px}#duty-coverage{border:0;border-left:3px solid #ad8850;border-radius:0 6px 6px 0;line-height:1.65;font-size:16px;padding:12px 14px}#duty-coverage[data-coverage=complete]{border-left-color:#2e7753}details{background:transparent;border:0;border-bottom:1px solid var(--line);border-radius:0;padding:0;margin-top:8px}summary{color:#425e57;font-size:15px;min-height:48px;padding:12px 0}#duty-checklist{padding-left:22px;font-size:15px;line-height:1.7}#duty-checklist li{padding:5px 0;border-bottom:1px solid #e1e6df}#duty-checklist li:last-child{border:0}.table-wrap{border:1px solid #adbfba;border-radius:9px;margin-top:22px;box-shadow:0 5px 20px #173c3a06}thead th{background:var(--ink);color:#fff;font-size:16px;font-weight:600;padding:15px 10px;border-color:#476763;letter-spacing:.2px}thead th:nth-child(2){font-size:12px}#rows .name-cell{color:#183b38;border-bottom-color:#a7b9b4}#rows tr:nth-child(2n)>*{border-bottom-color:#a7b9b4}#rows .period-cell{font-size:12px;letter-spacing:.5px;color:#435d57}td textarea{border-color:transparent;border-radius:4px;color:#233e3c}td textarea:focus{outline:2px solid var(--accent);outline-offset:-1px;background:#ffffff90!important}.duty-select{border-color:#aebfb7;color:#244f46;background:#ffffffce;font-size:16px;padding:8px 5px;border-radius:5px;min-height:46px}#rows td[data-leave=true] textarea,#rows td[data-leave=true] .duty-select{color:#b42318}td textarea::placeholder{color:#60756d}.under-table span{font-size:14px}.under-table button{border:0;background:transparent;font-size:14px;text-decoration:underline;text-underline-offset:4px}.sharebar{border-color:#d5dfd8;box-shadow:0 -4px 20px #173c3a06;background:#faf9f6f5}.sharebar-inner{max-width:708px}.sharebar button{border-radius:8px;font-size:18px;letter-spacing:.3px}dialog{border-color:#c3d0c8;border-radius:12px;box-shadow:0 18px 70px #15363230}dialog::backdrop{background:#122f2c80}
+@media(min-width:650px){main{padding-top:38px}h1{font-size:42px}.brand-line{margin-bottom:18px}header{padding-bottom:26px}td{padding:7px}}
+@media(max-width:360px){h1{font-size:30px}.brand-line{font-size:11px;letter-spacing:1.7px}thead th{padding:13px 6px}.duty-select{font-size:16px}}
+@media print{body{border-top:0}.brand-line{color:#173c3a}thead th{background:white;color:#173c3a}.table-wrap{box-shadow:none}}
+#people-name{width:100%;min-height:52px;padding:10px;border:1px solid #bdccc5;border-radius:8px;background:#fff;font-size:18px}main{padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right));padding-top:calc(28px + env(safe-area-inset-top))}.sharebar{padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right))}#rows .name-cell{overflow-wrap:anywhere}
+/* Final phone workflow: quiet overview, explicit omissions, reachable save state. */
+header{padding-bottom:16px;margin-bottom:18px}.brand-line{margin-bottom:10px}.save-state{margin-bottom:12px}#template-help{margin-bottom:8px}.table-wrap{margin-top:12px}.history{margin-top:4px;margin-bottom:4px}.history summary{font-size:15px}.history select{margin-bottom:12px}#duty-coverage{margin:8px 0 0;padding:9px 12px}#coverage-details{margin-top:0;scroll-margin-top:16px}#duty-checklist li[data-missing=true]{font-weight:600;color:#6f4d20}#duty-checklist li[data-missing=false]{color:#526761}#coverage-summary:focus{outline:2px solid var(--accent);outline-offset:2px}.dock-meta{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:-7px;margin-bottom:2px}.sharebar .dock-meta button{min-height:44px;padding:8px 2px;border:0;border-radius:4px;background:transparent;font-size:14px;letter-spacing:0;font-weight:600;text-align:left}.sharebar #coverage-jump{color:#775a2c;text-decoration:underline;text-underline-offset:3px}.sharebar #coverage-jump[data-coverage=complete]{color:#2e7753}.sharebar #dock-status{color:#526761;text-align:right;flex-shrink:0}.sharebar #dock-status[data-state=error]{color:#9b3026}.sharebar #dock-status[data-state=busy]{color:#775a2c}#load-warning,#status,#day-template{scroll-margin-top:16px}#photo-help{background:transparent;padding:0;margin-top:8px}.image-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}#photo-help .image-actions>*{margin:0;font-size:16px;min-height:48px;padding:9px 6px}#photo-tip{font-size:15px;margin:8px 0}#preview-warning[data-coverage=complete]{background:#edf5ee;border-color:#bad0c0;color:#28593c}#preview-check{margin:0 0 8px;font-size:16px;min-height:44px}#preview .preview-footer{padding-top:10px}html{scroll-padding-bottom:175px}main{padding-bottom:185px}
+@media print{.dock-meta,#template-controls{display:none}}
 </style></head><body><main>
-<header><h1 id="duty-title">duty</h1></header>
+<header><div class="brand-line"><span class="brand-mark" aria-hidden="true">A</span><span>TEAM A · DAILY DUTY</span></div><h1 id="duty-title">duty</h1></header>
 <label for="date">日期</label><div class="date-row"><input type="date" id="date"><button id="today" type="button">今天</button></div><p id="full-date" class="full-date"></p>
-<div class="history"><label for="history">已儲存日期</label><select id="history"><option value="">正在載入舊表…</option></select></div>
+<details class="history"><summary>已儲存日期</summary><label for="history" class="sr-only">選擇已儲存日期</label><select id="history"><option value="">正在載入舊表…</option></select></details>
 <div id="status" class="save-state" role="status" aria-live="polite" data-state="busy">正在連接…</div>
-<div id="load-warning" class="notice error" role="alert" hidden><strong id="error-title">儲存尚未確認</strong><span id="error-detail"></span><button id="retry" class="wide" type="button">再試一次</button></div>
+<div id="load-warning" class="notice error" role="alert" hidden><strong id="error-title">儲存尚未確認</strong><span id="error-detail"></span><button id="retry" class="wide" type="button">再試一次</button><button id="recover-edit" class="wide" type="button" hidden>核對雲端並返回修改</button></div>
 <div id="fatal" role="alert" hidden>請用完整的私密連結開啟值班表。</div>
 <div id="conflict" class="notice error" hidden role="alert"><strong>另一人剛修改了這份表。</strong>你剛填的內容仍在，未有覆蓋任何記錄。<div class="stack"><button id="use-other" type="button">查看對方的修改</button><button id="use-mine" type="button">保留我填的內容</button></div></div>
 <section id="table-section" hidden>
 <div id="date-notice" class="notice" hidden><strong id="notice-title"></strong><button id="edit-past" type="button" class="wide secondary">修改這天</button></div>
-<div id="template-controls"><label for="day-template">當日工作模板</label><select id="day-template" aria-describedby="template-help"></select><p id="template-help" style="font-size:15px">星期五請選 GA／no GA；只核對所選模板，不改動已有安排。</p><div id="duty-coverage" class="notice" role="status" aria-live="polite"></div><details><summary>核對每項工作</summary><ul id="duty-checklist"></ul></details></div>
-<div class="table-wrap"><table><caption id="table-caption">值班表</caption><colgroup><col style="width:26%"><col style="width:14%"><col style="width:60%"></colgroup><thead><tr><th scope="col">Name</th><th scope="col">AM/PM</th><th scope="col">Duty</th></tr></thead><tbody id="rows"></tbody></table></div>
+<div id="template-controls"><label id="template-label" for="day-template">當日工作模板</label><select id="day-template" aria-describedby="template-help"></select><p id="template-help" style="font-size:15px">星期五請選 GA／no GA；只核對所選模板，不改動已有安排。</p><div id="duty-coverage" class="notice" role="status" aria-live="polite"></div><details id="coverage-details"><summary id="coverage-summary">核對每項工作</summary><ul id="duty-checklist"></ul></details></div>
+<div class="table-wrap"><table><caption id="table-caption">值班表</caption><colgroup><col style="width:26%"><col style="width:14%"><col style="width:60%"></colgroup><thead><tr><th scope="col">Name</th><th scope="col">AM/<wbr>PM</th><th scope="col">Duty</th></tr></thead><tbody id="rows"></tbody></table></div>
 <div class="under-table"><span id="completion">已填 0 / 20 格</span><button id="undo" type="button" disabled>撤銷上一步</button></div>
 
 </section>
@@ -28,15 +40,15 @@
 <p id="message" class="message" role="status" aria-live="polite"></p>
 
 </main>
-<div class="sharebar"><div class="sharebar-inner"><button id="preview-open" class="primary wide" type="button" disabled>預覽及複製</button></div></div>
+<div class="sharebar"><div class="sharebar-inner"><div class="dock-meta"><button id="coverage-jump" type="button" aria-controls="coverage-details" disabled>核對工作</button><button id="dock-status" type="button" data-state="busy" aria-label="查看儲存狀態">連接中…</button></div><button id="preview-open" class="primary wide" type="button" disabled>預覽及複製</button></div></div>
 <dialog id="confirm" aria-labelledby="confirm-title"><h2 id="confirm-title"></h2><p id="confirm-text"></p><div class="dialog-actions"><button id="confirm-cancel" type="button">取消</button><button id="confirm-ok" type="button" class="primary">繼續</button></div></dialog>
 
-<dialog id="people-dialog" aria-labelledby="people-title"><h2 id="people-title">管理名單</h2><p>名單次序只用於新日期；底色套用至各日期。</p><ul id="people-list"></ul><label for="people-name">新增姓名</label><input id="people-name" maxlength="40" autocomplete="off"><button id="people-add" type="button" class="wide">新增</button><p id="people-state" role="status" aria-live="polite"></p><div class="dialog-actions"><button id="people-save" class="primary" type="button">儲存名單</button><button id="people-reload" type="button" hidden>載入最新名單</button><button id="people-close" type="button">取消</button></div></dialog>
+<dialog id="people-dialog" aria-labelledby="people-title"><h2 id="people-title">管理名單</h2><p>名單次序只用於新日期；底色套用至各日期。</p><ul id="people-list"></ul><label for="people-name">新增姓名</label><input id="people-name" maxlength="40" autocomplete="off"><button id="people-add" type="button" class="wide">新增</button><p id="people-state" role="status" aria-live="polite"></p><div class="dialog-actions"><button id="people-save" class="primary" type="button">儲存名單</button><button id="people-recover" type="button" hidden>核對雲端並返回修改</button><button id="people-reload" type="button" hidden>載入最新名單</button><button id="people-close" type="button">取消</button></div></dialog>
 <dialog id="preview" aria-labelledby="preview-title"><button id="preview-close" type="button">返回修改</button><h2 id="preview-title">預覽值班表</h2><p id="preview-date"></p>
 
-<p id="preview-warning"></p><div id="image-pages" hidden><button id="image-prev" type="button">上一張</button><span id="image-count"></span><button id="image-next" type="button">下一張</button></div><img id="image" alt="值班表圖片預覽">
+<p id="preview-warning"></p><button id="preview-check" type="button" class="secondary" hidden>返回核對尚欠工作</button><div id="image-pages" hidden><button id="image-prev" type="button">上一張</button><span id="image-count"></span><button id="image-next" type="button">下一張</button></div><img id="image" alt="值班表圖片預覽">
 <div class="preview-footer"><button id="copy-image" class="primary wide" type="button">複製圖片</button><p id="share-state" role="status"></p>
-<div id="photo-help" hidden><p>可長按圖片複製，或分享／儲存圖片。</p><button id="share" class="secondary wide" type="button">分享圖片</button><a id="download" class="button wide" download>儲存圖片</a></div></div></dialog>
+<div id="photo-help"><div class="image-actions"><button id="share" class="secondary" type="button">分享圖片</button><a id="download" class="button" download>儲存圖片</a></div><p id="photo-tip" hidden>也可長按圖片複製或儲存。</p></div></div></dialog>
 <script>
 'use strict';
 (()=>{
@@ -58,12 +70,12 @@ function setupTemplate(){
  if(day===5){select.add(new Option('請選星期五版本',''));for(const id of ['fri-no','fri-ga'])select.add(new Option(TEMPLATE_LABELS[id],id));}
  else if(selectedTemplate)select.add(new Option(TEMPLATE_LABELS[selectedTemplate],selectedTemplate));
  else select.add(new Option('此日期沒有提供模板',''));
- select.value=selectedTemplate;populateDutyChoices();
+ select.value=selectedTemplate;select.hidden=!!selectedTemplate;$('template-help').hidden=!!selectedTemplate;$('template-label').textContent=selectedTemplate?TEMPLATE_LABELS[selectedTemplate]+' · 工作核對':'當日工作模板';$('coverage-details').open=false;$('template-help').textContent=day===5?'請選 GA／no GA 版本；不改動已有安排。':'按所選模板核對，不改動已有安排。';populateDutyChoices();
 }
 function populateDutyChoices(){
  const duties=Object.keys(DUTY_TEMPLATES[selectedTemplate]||{});
  leaveButtons.forEach(({button,field},i)=>{
-  button.replaceChildren(new Option('選擇工作（加入此格）',''));
+  button.replaceChildren(new Option('＋ 加入工作',''));
   const period=i%2;
   for(const label of [...duties,...OPTIONAL_DUTIES]){
    if((/\(am\)|\bam$/i.test(label)&&period!==0)||(/\(pm\)|^pm WR$|\bpm$/i.test(label)&&period!==1))continue;
@@ -83,15 +95,27 @@ function coverageResult(){
  });
 }
 function updateCoverage(){
- const rows=coverageResult(),box=$('duty-coverage');$('duty-checklist').replaceChildren();
+ const rows=coverageResult(),box=$('duty-coverage'),jump=$('coverage-jump');$('duty-checklist').replaceChildren();
  $('day-template').disabled=S.phase==='loading'||S.previewing;
- if(!rows){box.textContent=S.date&&new Date(S.date+'T12:00:00Z').getUTCDay()===5?'請先選擇星期五 GA／no GA 版本，才能核對工作。':'此日期沒有工作模板，不能確認全部分配。';return;}
+ jump.disabled=!S.record||S.phase==='loading';jump.dataset.coverage='pending';
+ if(!rows){box.dataset.coverage='pending';box.style.background='#fff7e7';box.textContent=S.date&&new Date(S.date+'T12:00:00Z').getUTCDay()===5?'請先選擇星期五 GA／no GA 版本，才能核對工作。':'此日期沒有工作模板，不能確認全部分配。';jump.textContent=new Date(S.date+'T12:00:00Z').getUTCDay()===5?'選擇模板 ↑':'未有工作模板 ↑';$('coverage-summary').textContent='核對每項工作';$('coverage-details').hidden=true;return;}
+ $('coverage-details').hidden=false;
  const missing=rows.filter(x=>x.remaining),total=rows.reduce((n,x)=>n+x.needed,0),left=rows.reduce((n,x)=>n+x.remaining,0);
  const saved=S.phase==='ready'&&!S.dirty&&!S.req;
- box.textContent=missing.length?'尚欠 '+left+' / '+total+' 個名額：'+missing.map(x=>x.label+(x.remaining>1?' ×'+x.remaining:'')).join('、'):(saved?'當日工作已全部分配':'當日工作已全部分配（儲存尚未確認）');
+ box.textContent=missing.length?'尚欠 '+left+' / '+total+' 個名額':(saved?'當日工作已全部分配':'當日工作已全部分配（儲存尚未確認）');
+ box.dataset.coverage=!missing.length&&saved?'complete':'pending';jump.dataset.coverage=box.dataset.coverage;
  box.style.background=missing.length?'#fff7e7':saved?'#e7f4ea':'#fff7e7';
- rows.forEach(x=>{const li=document.createElement('li');li.textContent=x.label+'：'+Math.min(x.assigned.length,x.needed)+' / '+x.needed+(x.assigned.length?' — '+x.assigned.join('、'):'（未分配）');$('duty-checklist').append(li);});
+ jump.textContent=missing.length?'尚欠 '+left+' 個名額 ↑':'全部分配 · 核對 ↑';
+ $('coverage-summary').textContent=missing.length?'查看尚欠工作（'+missing.length+' 項）':'核對每項工作';
+ // Keep every duty and assignment visible in the disclosure, with omissions first.
+ [...missing,...rows.filter(x=>!x.remaining)].forEach(x=>{const li=document.createElement('li');li.dataset.missing=String(!!x.remaining);li.textContent=x.label+'：'+Math.min(x.assigned.length,x.needed)+' / '+x.needed+(x.assigned.length?' — '+x.assigned.join('、'):'（未分配）');$('duty-checklist').append(li);});
 }
+function showCoverage(){
+ if(!coverageResult()){const el=new Date(S.date+'T12:00:00Z').getUTCDay()===5?$('day-template'):$('date');el.focus();el.scrollIntoView({block:'center'});return;}
+ $('coverage-details').open=true;$('coverage-summary').focus();$('coverage-details').scrollIntoView({block:'start'});
+}
+$('coverage-jump').onclick=showCoverage;
+$('dock-status').onclick=()=>{const el=S.phase==='error'?$('load-warning'):S.phase==='conflict'?$('conflict'):$('status');el.scrollIntoView({block:'center'});if(S.phase==='error')$('retry').focus({preventScroll:true});};
 $('day-template').onchange=()=>{selectedTemplate=$('day-template').value;populateDutyChoices();update();};
 const S={date:'',target:'',record:null,dates:[],phase:'loading',dirty:false,req:null,inflight:null,timer:null,pastEditing:false,undo:[],conflict:null,loadError:false,importing:false,backup:'',previewing:false};
 let privateKey='',previewFile=null,focusSnapshot=null,loadSequence=0;
@@ -122,7 +146,7 @@ let resizeFrame;addEventListener('resize',()=>{cancelAnimationFrame(resizeFrame)
 function values(){return Object.fromEntries(NAMES.map((n,i)=>[n,fields[i].map(el=>el.value)]));}
 function setValues(v){NAMES.forEach((n,i)=>fields[i].forEach((el,j)=>{el.value=v[n]?.[j]||'';el.dataset.custom='false';fit(el);}));}
 function say(text,error=false){$('message').textContent=text;$('message').style.color=error?'#8e231b':'';}
-function status(text,state='ready'){$('status').textContent=text;$('status').dataset.state=state;}
+function status(text,state='ready'){$('status').textContent=text;$('status').dataset.state=state;const dock=$('dock-status');dock.dataset.state=state;dock.textContent=state==='saved'?'已儲存':state==='error'?(S.loadError?'載入未完成 ↑':S.phase==='conflict'?'版本衝突 ↑':'儲存未確認 ↑'):state==='busy'?(S.phase==='loading'?'載入中…':S.phase==='saving'?'儲存中…':'待儲存'):'自動儲存';dock.setAttribute('aria-label',text+'；查看狀態');}
 async function rpc(name,...args){
  const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),35000);
  try{
@@ -137,7 +161,7 @@ function canEdit(){return !!S.record&&!S.previewing&&!['loading','error','confli
 function update(){
  updateCoverage();
  const busy=S.phase==='loading'||S.phase==='saving'||S.importing||S.previewing;
- $('date').disabled=busy||S.phase==='conflict';$('today').disabled=busy||S.phase==='conflict';$('history').disabled=busy||S.phase==='conflict';
+ $('date').disabled=busy||S.phase==='conflict';$('today').disabled=busy||S.phase==='conflict';$('history').disabled=busy||S.phase==='conflict'||S.phase==='error';$('date').disabled||=S.phase==='error';$('today').disabled||=S.phase==='error';
  all.forEach(el=>el.readOnly=!canEdit());
  leaveButtons.forEach(({button,field})=>{button.disabled=!canEdit();const leave=isLeave(field.value);button.value=leave?'leave':'';field.hidden=false;field.closest('td').dataset.leave=String(leave);fit(field);});
  $('completion').textContent='已填 '+all.filter(el=>el.value.trim()).length+' / '+all.length+' 格';
@@ -150,7 +174,7 @@ function update(){
 }
 function rebuildDates(){$('history').closest('.history').hidden=!S.dates.length;const selected=$('history');selected.replaceChildren(new Option(S.dates.length?'選擇舊表日期':'未有舊表',''));S.dates.forEach(d=>selected.add(new Option(fullDate(d),d)));}
 function savedStatus(){status(S.record.revision?'已儲存 · '+when(S.record.updated):'填寫後會自動儲存',S.record.revision?'saved':'ready');}
-function errorState(error,loading=false){S.phase='error';S.loadError=loading;$('error-title').textContent=loading?'暫時未能載入這天':'儲存尚未確認';$('error-detail').textContent=loading?'暫時連不到雲端，請稍後再試。':'請保留此頁，按「再試儲存」確認；關閉網頁可能會失去未儲存的修改。';$('retry').textContent=loading?'重新載入':'再試儲存';status(loading?'尚未載入值班表':'儲存尚未確認，請再試','error');update();}
+function errorState(error,loading=false){$('recover-edit').hidden=loading;S.phase='error';S.loadError=loading;$('error-title').textContent=loading?'暫時未能載入這天':'儲存尚未確認';$('error-detail').textContent=loading?'暫時連不到雲端，請稍後再試。':'請保留此頁，按「再試儲存」確認；關閉網頁可能會失去未儲存的修改。';$('retry').textContent=loading?'重新載入':'再試儲存';status(loading?'尚未載入值班表':'儲存尚未確認，請再試','error');update();}
 async function load(d){
  if(!validDate(d)){say('請選擇有效日期。',true);return false;}
  const sequence=++loadSequence;S.target=d;S.phase='loading';S.loadError=false;$('table-section').hidden=true;$('date').value=d;$('full-date').textContent=fullDate(d);$('duty-title').textContent=dutyTitle(d);document.title=dutyTitle(d);status('正在載入…','busy');update();
@@ -177,6 +201,14 @@ async function flush(){clearTimeout(S.timer);if(S.phase==='error'||S.phase==='co
 async function changeDate(d){$('date').value=S.date||d;if(!await flush())return;say('');await load(d);}
 $('date').onchange=()=>changeDate($('date').value);$('today').onclick=()=>changeDate(nowDate());$('history').onchange=()=>{if($('history').value)changeDate($('history').value);};
 $('retry').onclick=()=>S.loadError?load(S.target):save();
+$('recover-edit').onclick=async()=>{
+ if(S.inflight||S.loadError||S.phase!=='error')return;
+ const b=$('recover-edit');b.disabled=true;
+ try{const r=await rpc('getRoster',S.date),remote=r.record;
+  if(remote.revision!==S.record.revision&&JSON.stringify(remote.duties)!==JSON.stringify(S.req?.duties)){S.conflict=remote;S.phase='conflict';S.req=null;status('雲端已有新版本，請選擇保留的內容','error');update();return;}
+  S.record=remote;S.req=null;S.phase='ready';S.dirty=JSON.stringify(values())!==JSON.stringify(remote.duties);S.dates=r.dates;rebuildDates();status(S.dirty?'草稿保留，可繼續修改；修改後再儲存':'已核對雲端，內容已儲存',S.dirty?'busy':'saved');update();
+ }catch(e){say('暫時未能核對雲端。草稿仍保留，請保持此頁開啟。',true);}finally{b.disabled=false;}
+};
 $('edit-past').onclick=async()=>{if(S.pastEditing&&!await flush())return;S.pastEditing=!S.pastEditing;update();say(S.pastEditing?'現在可以修改 '+fullDate(S.date)+'。':'修改完成。');};
 function bindFields(){all.forEach((el,i)=>{
  el.addEventListener('focus',()=>{focusSnapshot=JSON.stringify(values());});
@@ -220,10 +252,10 @@ async function checkFresh(){
  const date=S.date,revision=S.record?.revision;if(!date)return;
  try{const [r,people]=await Promise.all([rpc('getRoster',date),rpc('getPeople')]);if(S.phase!=='ready'||S.dirty||S.date!==date||S.record.revision!==revision)return;nameColors=people.colors||{};applyNameColors();S.dates=r.dates;rebuildDates();if(r.record.revision!==revision||JSON.stringify(Object.keys(r.record.duties))!==JSON.stringify(NAMES)){S.record=r.record;S.undo=[];renderFields(r.record.duties);savedStatus();say('已載入最新修改。');}update();}catch(e){say('暫時未能更新，畫面可能不是最新版本。請確認連線後再複製。',true);}
 }
-document.addEventListener('visibilitychange',()=>{if(!document.hidden)checkFresh();});
+document.addEventListener('visibilitychange',()=>{if(document.hidden){if(S.dirty&&S.phase==='ready')save();}else checkFresh();});
 let previewImages=[],previewIndex=0;
 function showImagePage(){
- const url=previewImages[previewIndex],raw=atob(url.split(',')[1]),suffix=previewImages.length>1?'_'+(previewIndex+1):'';
+ const url=previewImages[previewIndex](),raw=atob(url.split(',')[1]),suffix=previewImages.length>1?'_'+(previewIndex+1):'';
  previewFile=new File([Uint8Array.from(raw,c=>c.charCodeAt(0))],'Duty_'+S.date+suffix+'.png',{type:'image/png'});
  $('image').src=url;$('image').alt=dutyTitle(S.date)+' 值班表 '+(previewIndex+1)+' / '+previewImages.length+'. '+NAMES.map((n,i)=>n+'：上午 '+(fields[i][0].value||'未填')+'；下午 '+(fields[i][1].value||'未填')).join('; ');
  $('download').href=url;$('download').download=previewFile.name;$('copy-image').disabled=false;
@@ -235,12 +267,12 @@ $('image-next').onclick=()=>{if(previewIndex<previewImages.length-1){previewInde
 function prepareImage(){previewImages=makeImages();previewIndex=0;showImagePage();}
 function makeImages(){
  const c=document.createElement('canvas'),g=c.getContext('2d');if(!g)throw Error('Canvas unavailable');
- const widths=[214,140,646],font='30px Arial,sans-serif',maxUnits=210;g.font=font;
+ const widths=[214,140,646],font='30px Arial,sans-serif',maxUnits=80;g.font=font;
  function wrap(s,w){const out=[];let line='';for(const ch of Array.from(s.trim()||'—')){if(ch==='\n'){out.push(line);line='';}else if(line&&g.measureText(line+ch).width>w){out.push(line);line=ch;}else line+=ch;}out.push(line);return out;}
  const pages=[];let page=[],used=0;
  function nextPage(){if(page.length)pages.push(page);page=[];used=0;}
  NAMES.forEach((name,i)=>{
-  const nameLines=wrap(name,widths[0]-32),minHeight=Math.max(76,Math.ceil((nameLines.length*40+30)/2));
+  const nameLines=wrap(name+'（續）',widths[0]-32),minHeight=Math.max(76,nameLines.length*40+30);
   fields[i].forEach((el,period)=>{const lines=wrap(el.value,widths[2]-32);let offset=0;
    while(offset<lines.length){const space=maxUnits-used,capacity=Math.floor((space*40-30)/40);if(capacity<1||space*40<minHeight){nextPage();continue;}
     const count=Math.min(lines.length-offset,capacity),part=lines.slice(offset,offset+count),height=Math.max(minHeight,part.length*40+30),units=Math.ceil(height/40);
@@ -249,11 +281,11 @@ function makeImages(){
    }
   });
  });nextPage();
- return pages.map((rows,pi)=>{
-  c.width=1064;c.height=232+rows.reduce((a,r)=>a+r.height,0);if(c.height>9000)throw Error('Image page exceeds safe height');
-  g.fillStyle='#fff';g.fillRect(0,0,c.width,c.height);g.fillStyle='#172b40';g.textBaseline='top';g.font='bold 40px Arial,sans-serif';g.fillText(dutyTitle(S.date)+(pages.length>1?' · '+(pi+1)+'/'+pages.length:''),32,25);g.font=font;g.fillText(fullDate(S.date),32,80);let y=132;
-  function cell(x,top,w,height,lines,fill,bold=false,leave=false){g.fillStyle=fill;g.fillRect(x,top,w,height);g.lineWidth=1.5;g.strokeStyle='#9aa9b8';g.strokeRect(x,top,w,height);g.fillStyle=leave?'#b42318':'#172b40';g.font=(bold?'bold ':'')+font;const textTop=top+Math.max(15,(height-lines.length*40)/2);lines.forEach((t,k)=>g.fillText(t,x+16,textTop+k*40));}
-  let x=32;[['Name'],['AM/PM'],['Duty']].forEach((ls,j)=>{cell(x,y,widths[j],76,ls,'#e8eef5',true);x+=widths[j];});y+=76;
+ return pages.map((rows,pi)=>()=>{
+  c.width=1064;c.height=296+rows.reduce((a,r)=>a+r.height,0);if(c.height>3600)throw Error('Image page exceeds safe height');
+  g.fillStyle='#fff';g.fillRect(0,0,c.width,c.height);g.fillStyle='#173c3a';g.fillRect(32,24,1000,5);g.textBaseline='top';g.font='bold 20px Arial,sans-serif';g.fillText('TEAM A  /  DAILY DUTY',32,47);g.font='44px Georgia,serif';g.fillText(dutyTitle(S.date)+(pages.length>1?' · '+(pi+1)+'/'+pages.length:''),32,84);g.fillStyle='#526761';g.font='26px Arial,sans-serif';g.fillText(fullDate(S.date),32,144);let y=196;
+  function cell(x,top,w,height,lines,fill,bold=false,leave=false){g.fillStyle=fill;g.fillRect(x,top,w,height);g.lineWidth=1.5;g.strokeStyle='#b3c2bd';g.strokeRect(x,top,w,height);g.fillStyle=leave?'#b42318':fill==='#173c3a'?'#fff':'#203b3a';g.font=(bold?'bold ':'')+font;const textTop=top+Math.max(15,(height-lines.length*40)/2);lines.forEach((t,k)=>g.fillText(t,x+16,textTop+k*40));}
+  let x=32;[['Name'],['AM/PM'],['Duty']].forEach((ls,j)=>{cell(x,y,widths[j],76,ls,'#173c3a',true);x+=widths[j];});y+=76;
   for(let k=0;k<rows.length;){let end=k+1;while(end<rows.length&&rows[end].index===rows[k].index)end++;
    const r=rows[k],height=rows.slice(k,end).reduce((a,r)=>a+r.height,0),continuation=r.period!==0||r.continued;
    cell(32,y,widths[0],height,wrap(r.name+(continuation?'（續）':''),widths[0]-32),colorFor(r.name),true);
@@ -272,12 +304,14 @@ $('preview-open').onclick=async()=>{
  const [latest,people]=await Promise.all([rpc('getRoster',S.date),rpc('getPeople')]);nameColors=people.colors||{};applyNameColors();
  if(latest.record.revision!==S.record.revision||JSON.stringify(Object.keys(latest.record.duties))!==JSON.stringify(NAMES)){await load(S.date);say('另一人剛修改了這份表。請核對最新內容，再按「預覽及複製」。');return;}
  $('preview-date').textContent=dutyTitle(S.date);const empty=all.filter(el=>!el.value.trim()).length;
- $('preview-warning').textContent=empty?'未填：'+empty+' 格':'';$('preview-warning').hidden=!empty;
- previewFile=null;$('image').removeAttribute('src');prepareImage();$('photo-help').hidden=true;$('share-state').textContent='';$('preview').showModal();
+ const coverage=coverageResult(),left=coverage?.reduce((n,x)=>n+x.remaining,0);
+ $('preview-warning').textContent=!coverage?(new Date(S.date+'T12:00:00Z').getUTCDay()===5?'請先選擇星期五 GA／no GA 模板，再核對工作。':'此日期沒有工作模板，不能確認全部分配。'):left?'尚欠 '+left+' 個工作名額，請核對後再分享。':'當日工作已全部分配'+(empty?'；'+empty+' 格空白（沒有填寫安排）。':'。');$('preview-warning').hidden=false;$('preview-warning').dataset.coverage=coverage&&!left?'complete':'pending';$('preview-check').hidden=!!coverage&&!left;$('preview-check').textContent=coverage?'返回核對尚欠工作':new Date(S.date+'T12:00:00Z').getUTCDay()===5?'返回選擇模板':'返回查看日期';
+ previewFile=null;$('image').removeAttribute('src');prepareImage();$('photo-help').hidden=false;$('photo-tip').hidden=true;$('share-state').textContent='';$('preview').showModal();
  }catch(e){say('暫時未能產生最新圖片，請稍後再按「預覽及複製」。',true);}finally{S.previewing=false;update();}
 };
-$('preview-close').onclick=()=>$('preview').close();$('preview').onclose=()=>{previewFile=null;};
-$('copy-image').onclick=async()=>{if(!previewFile)return;try{if(!navigator.clipboard?.write||!window.ClipboardItem)throw Error('Image clipboard unavailable');await navigator.clipboard.write([new ClipboardItem({'image/png':previewFile})]);$('share-state').textContent='已複製';}catch(e){$('photo-help').hidden=false;$('share-state').textContent='未能自動複製';}};
+$('preview-check').onclick=()=>{$('preview').close();showCoverage();};
+$('preview-close').onclick=()=>$('preview').close();$('preview').onclose=()=>{previewFile=null;previewImages=[];$('image').removeAttribute('src');$('download').removeAttribute('href');};
+$('copy-image').onclick=async()=>{if(!previewFile)return;try{if(!navigator.clipboard?.write||!window.ClipboardItem)throw Error('Image clipboard unavailable');await navigator.clipboard.write([new ClipboardItem({'image/png':previewFile})]);$('share-state').textContent='已複製';}catch(e){$('photo-help').hidden=false;$('photo-tip').hidden=false;$('share-state').textContent='未能自動複製';}};
 $('share').onclick=async()=>{if(!previewFile)return;try{if(navigator.share&&navigator.canShare?.({files:[previewFile]})){await navigator.share({files:[previewFile]});$('share-state').textContent='分享選單已關閉';return;}}catch(e){if(e.name==='AbortError'){$('share-state').textContent='已取消分享';return;}}$('photo-help').hidden=false;$('share-state').textContent='未能直接分享，可儲存圖片。';};
 // Template editor is separate from the selected date and never rewrites it.
 const P={base:null,names:[],colors:{},req:null,busy:false,conflict:false};
@@ -287,7 +321,7 @@ function peopleControls(){
  const locked=P.busy||!!P.req||P.conflict||!P.base;
  $('people-name').disabled=locked;$('people-add').disabled=locked||P.names.length>=30;
  $('people-save').disabled=P.busy||P.conflict||!P.base||(!P.req&&!peopleDirty());
- $('people-close').disabled=P.busy||!!P.req;
+ $('people-close').disabled=P.busy||!!P.req;$('people-recover').hidden=!P.req;$('people-recover').disabled=P.busy;
  $('people-reload').hidden=!P.conflict&&!!P.base;$('people-reload').disabled=P.busy;
  document.querySelectorAll('#people-list select').forEach(b=>b.disabled=locked);
  document.querySelectorAll('#people-list button').forEach(b=>b.disabled=locked||b.dataset.edge==='true');
@@ -338,6 +372,11 @@ $('people-save').onclick=async()=>{
  finally{P.busy=false;$('people-save').textContent=P.req?'再試儲存':'儲存名單';peopleControls();}
 };
 async function closePeople(){if(P.busy||P.req)return;if(peopleDirty()&&!await ask('放棄未儲存的名單修改？','值班表及已儲存名單不會改動。','放棄修改'))return;$('people-dialog').close();}
+$('people-recover').onclick=async()=>{if(P.busy||!P.req)return;P.busy=true;peopleControls();
+ try{const remote=await rpc('getPeople');const same=JSON.stringify(remote.names)===JSON.stringify(P.req.names)&&JSON.stringify(remote.colors||{})===JSON.stringify(P.req.colors||{});
+ if(remote.revision!==P.base.revision&&!same){P.req=null;P.conflict=true;peopleState('雲端名單已有修改，請載入最新名單後再修改。');}
+ else{P.base=remote;P.req=null;P.conflict=false;peopleState('已核對雲端。你的草稿保留，可繼續修改或取消。');$('people-save').textContent='儲存名單';}
+ }catch(e){peopleState('暫時未能核對雲端。草稿仍保留，請稍後再試。');}finally{P.busy=false;peopleControls();}};
 $('people-close').onclick=closePeople;$('people-dialog').oncancel=e=>{e.preventDefault();closePeople();};
 $('people-reload').onclick=async()=>{if(P.busy||P.req)return;if(peopleDirty()&&!await ask('載入最新名單？','這會放棄尚未儲存的名單草稿。舊表不變。','載入最新'))return;await loadPeople();};
 privateKey=new URLSearchParams(window.location.hash.slice(1)).get('key')||'';
