@@ -19,6 +19,7 @@
 <div id="conflict" class="notice error" hidden role="alert"><strong>另一人剛修改了這份表。</strong>你剛填的內容仍在，未有覆蓋任何記錄。<div class="stack"><button id="use-other" type="button">查看對方的修改</button><button id="use-mine" type="button">保留我填的內容</button></div></div>
 <section id="table-section" hidden>
 <div id="date-notice" class="notice" hidden><strong id="notice-title"></strong><button id="edit-past" type="button" class="wide secondary">修改這天</button></div>
+<div id="template-controls"><label for="day-template">當日工作模板</label><select id="day-template" aria-describedby="template-help"></select><p id="template-help" style="font-size:15px">星期五請選 GA／no GA；只核對所選模板，不改動已有安排。</p><div id="duty-coverage" class="notice" role="status" aria-live="polite"></div><details><summary>核對每項工作</summary><ul id="duty-checklist"></ul></details></div>
 <div class="table-wrap"><table><caption id="table-caption">值班表</caption><colgroup><col style="width:26%"><col style="width:14%"><col style="width:60%"></colgroup><thead><tr><th scope="col">Name</th><th scope="col">AM/PM</th><th scope="col">Duty</th></tr></thead><tbody id="rows"></tbody></table></div>
 <div class="under-table"><span id="completion">已填 0 / 20 格</span><button id="undo" type="button" disabled>撤銷上一步</button></div>
 
@@ -45,6 +46,53 @@ const PALETTE={blue:{label:'淺藍',fill:'#dcebf3'},rose:{label:'淺紅',fill:'#
 let nameColors={};
 const colorFor=name=>PALETTE[nameColors[name]]?.fill||(['Raiden','Vikki','Tony','Cindy'].includes(name)?PALETTE.rose.fill:['Selina','Selena','Victor','Harry'].includes(name)?PALETTE.purple.fill:PALETTE.blue.fill);
 function applyNameColors(){document.querySelectorAll('#rows tr').forEach((row,i)=>{row.style.setProperty('--row-color',colorFor(NAMES[Number(row.dataset.personIndex)]));});}
+const DUTY_TEMPLATES={"mon": {"Day time Duty": 1, "Day GA": 1, "Elective GA OT": 1, "CLN 1": 1, "Team D (pm) specialist cover": 1, "Team D (pm) OPD cover": 1, "EOGD": 1, "Team meeting": 1, "ERCP": 1, "CLN 2": 1, "EOT": 1}, "tue": {"Day time Duty": 1, "EOGD": 1, "OPD": 1, "L-block": 1, "ERCP": 1, "LA": 1, "EOT": 1}, "wed": {"Day time Duty": 1, "DS5 LA": 2, "Elective GA: liver (S)": 2, "Team D (am) specialist cover": 1, "Team D (am) OPD cover": 1, "EOGD": 1, "PR1": 1, "Additional new case clinic": 1, "FM training": 1, "Elective GA: lap chole (A)": 2, "Elective GA: lap chole (S)": 1, "Department meeting": 1, "EOT": 1}, "thu": {"Day time Duty": 1, "CLN 1": 1, "EOGD": 1, "ERCP": 1, "EUS": 1, "CLN 2": 1, "OPD": 1, "EOT": 1}, "fri-no": {"Day time Duty": 1, "CLN 1": 1, "EOGD": 1, "ERCP": 1, "CLN 2": 1, "EOT": 1, "OGD am": 1, "OGD pm": 1, "XR meeting": 1}, "fri-ga": {"Day time Duty": 1, "CLN 1": 1, "EOGD": 1, "ERCP": 1, "CLN 2": 1, "EOT": 1, "GA list": 2, "OGD pm": 1, "MS teaching": 1, "XR meeting": 1}};
+const TEMPLATE_LABELS={mon:'星期一',tue:'星期二',wed:'星期三',thu:'星期四','fri-no':'星期五（no GA）','fri-ga':'星期五（GA）'};
+const OPTIONAL_DUTIES=['pm WR','On leave','Post call off','If ERCP'];
+let selectedTemplate='';
+const normalizeDuty=s=>s.trim().replace(/\s+/g,' ').toLowerCase();
+function setupTemplate(){
+ const day=new Date(S.date+'T12:00:00Z').getUTCDay();
+ selectedTemplate=({1:'mon',2:'tue',3:'wed',4:'thu'})[day]||'';
+ const select=$('day-template');select.replaceChildren();
+ if(day===5){select.add(new Option('請選星期五版本',''));for(const id of ['fri-no','fri-ga'])select.add(new Option(TEMPLATE_LABELS[id],id));}
+ else if(selectedTemplate)select.add(new Option(TEMPLATE_LABELS[selectedTemplate],selectedTemplate));
+ else select.add(new Option('此日期沒有提供模板',''));
+ select.value=selectedTemplate;populateDutyChoices();
+}
+function populateDutyChoices(){
+ const duties=Object.keys(DUTY_TEMPLATES[selectedTemplate]||{});
+ leaveButtons.forEach(({button,field},i)=>{
+  button.replaceChildren(new Option('選擇工作（加入此格）',''));
+  const period=i%2;
+  for(const label of [...duties,...OPTIONAL_DUTIES]){
+   if((/\(am\)|\bam$/i.test(label)&&period!==0)||(/\(pm\)|^pm WR$|\bpm$/i.test(label)&&period!==1))continue;
+   button.add(new Option(label,label==='On leave'?'leave':'duty:'+label));
+  }
+  button.add(new Option('清空','clear'));
+ });
+}
+function coverageResult(){
+ const template=DUTY_TEMPLATES[selectedTemplate];if(!template)return null;
+ return Object.entries(template).map(([label,needed])=>{
+  const assigned=NAMES.flatMap((name,i)=>fields[i].flatMap((el,j)=>{
+   if((/\(am\)|\bam$/i.test(label)&&j!==0)||(/\(pm\)|\bpm$/i.test(label)&&j!==1))return [];
+   return el.value.split('\n').some(line=>normalizeDuty(line)===normalizeDuty(label))?[name+' '+(j===0?'AM':'PM')]:[];
+  }));
+  return {label,needed,assigned,remaining:Math.max(0,needed-assigned.length)};
+ });
+}
+function updateCoverage(){
+ const rows=coverageResult(),box=$('duty-coverage');$('duty-checklist').replaceChildren();
+ $('day-template').disabled=S.phase==='loading'||S.previewing;
+ if(!rows){box.textContent=S.date&&new Date(S.date+'T12:00:00Z').getUTCDay()===5?'請先選擇星期五 GA／no GA 版本，才能核對工作。':'此日期沒有工作模板，不能確認全部分配。';return;}
+ const missing=rows.filter(x=>x.remaining),total=rows.reduce((n,x)=>n+x.needed,0),left=rows.reduce((n,x)=>n+x.remaining,0);
+ const saved=S.phase==='ready'&&!S.dirty&&!S.req;
+ box.textContent=missing.length?'尚欠 '+left+' / '+total+' 個名額：'+missing.map(x=>x.label+(x.remaining>1?' ×'+x.remaining:'')).join('、'):(saved?'當日工作已全部分配':'當日工作已全部分配（儲存尚未確認）');
+ box.style.background=missing.length?'#fff7e7':saved?'#e7f4ea':'#fff7e7';
+ rows.forEach(x=>{const li=document.createElement('li');li.textContent=x.label+'：'+Math.min(x.assigned.length,x.needed)+' / '+x.needed+(x.assigned.length?' — '+x.assigned.join('、'):'（未分配）');$('duty-checklist').append(li);});
+}
+$('day-template').onchange=()=>{selectedTemplate=$('day-template').value;populateDutyChoices();update();};
 const S={date:'',target:'',record:null,dates:[],phase:'loading',dirty:false,req:null,inflight:null,timer:null,pastEditing:false,undo:[],conflict:null,loadError:false,importing:false,backup:'',previewing:false};
 let privateKey='',previewFile=null,focusSnapshot=null,loadSequence=0;
 const clone=x=>JSON.parse(JSON.stringify(x));
@@ -67,7 +115,7 @@ function renderFields(duties){
   const el=document.createElement('textarea');el.rows=1;el.maxLength=2000;el.placeholder='填寫安排';el.spellcheck=false;el.autocomplete='off';el.setAttribute('aria-label',name+' '+period);el.enterKeyHint='enter';
   const cell=row.insertCell();cell.append(el);const select=document.createElement('select');select.className='duty-select';select.setAttribute('aria-label',name+' '+period+' 選擇安排');select.add(new Option('選項',''));select.add(new Option('Leave','leave'));select.add(new Option('清空','clear'));select.disabled=true;select.onchange=()=>selectDuty(el,select);cell.append(select);leaveButtons.push({button:select,field:el});return el;
  }));
-all=fields.flat();bindFields();setValues(duties);applyNameColors();
+all=fields.flat();bindFields();setValues(duties);applyNameColors();setupTemplate();
 }
 function fit(el){el.style.height='56px';el.style.height=Math.max(56,el.scrollHeight+2)+'px';}
 let resizeFrame;addEventListener('resize',()=>{cancelAnimationFrame(resizeFrame);resizeFrame=requestAnimationFrame(()=>all.forEach(fit));});
@@ -87,6 +135,7 @@ async function rpc(name,...args){
 }
 function canEdit(){return !!S.record&&!S.previewing&&!['loading','error','conflict'].includes(S.phase)&&!S.importing&&(S.date>=nowDate()||S.pastEditing);}
 function update(){
+ updateCoverage();
  const busy=S.phase==='loading'||S.phase==='saving'||S.importing||S.previewing;
  $('date').disabled=busy||S.phase==='conflict';$('today').disabled=busy||S.phase==='conflict';$('history').disabled=busy||S.phase==='conflict';
  all.forEach(el=>el.readOnly=!canEdit());
@@ -132,7 +181,7 @@ $('edit-past').onclick=async()=>{if(S.pastEditing&&!await flush())return;S.pastE
 function bindFields(){all.forEach((el,i)=>{
  el.addEventListener('focus',()=>{focusSnapshot=JSON.stringify(values());});
  el.addEventListener('input',()=>{if(focusSnapshot){S.undo.push(JSON.parse(focusSnapshot));if(S.undo.length>20)S.undo.shift();focusSnapshot=null;}fit(el);changed();});
- el.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();all[i+1]?all[i+1].focus():el.blur();}});
+ 
 });}
 function ask(title,text,label='繼續'){return new Promise(resolve=>{const d=$('confirm');$('confirm-title').textContent=title;$('confirm-text').textContent=text;$('confirm-ok').textContent=label;const finish=value=>{d.close();$('confirm-ok').onclick=null;$('confirm-cancel').onclick=null;d.oncancel=null;resolve(value);};$('confirm-ok').onclick=()=>finish(true);$('confirm-cancel').onclick=()=>finish(false);d.oncancel=e=>{e.preventDefault();finish(false);};d.showModal();$('confirm-cancel').focus();});}
 async function selectDuty(field,select){
@@ -141,6 +190,14 @@ async function selectDuty(field,select){
  if(choice===''){update();return;}
  field.dataset.custom='false';update();
  if(choice==='leave'){await chooseLeave(field);update();return;}
+ if(choice.startsWith('duty:')){
+  const label=choice.slice(5);if(field.value.split('\n').some(s=>normalizeDuty(s)===normalizeDuty(label))){say('這格已有 '+label+'。');return;}
+  if(isLeave(previous)&&!await ask('取代 Leave？','加入工作會取代這格的 Leave。','取代'))return;
+  if(!canEdit()||S.date!==date||field.value!==previous)return;
+  const next=(isLeave(previous)?'':previous.trim())+(previous.trim()&&!isLeave(previous)?'\n':'')+label;
+  if(next.length>2000){say('這格已達字數上限，請先縮短內容。',true);return;}
+  S.undo.push(clone(values()));if(S.undo.length>20)S.undo.shift();focusSnapshot=null;field.value=next;fit(field);changed();return;
+ }
  if(previous.trim()&&!await ask('清空這格？','會改為未填；如有需要，可用「撤銷上一步」還原。','清空')){update();return;}
  if(!canEdit()||S.date!==date||field.value!==previous){update();return;}
  if(previous){S.undo.push(clone(values()));if(S.undo.length>20)S.undo.shift();focusSnapshot=null;field.value='';changed();}else update();
