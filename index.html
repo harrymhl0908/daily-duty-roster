@@ -21,10 +21,19 @@ body{border-top:5px solid var(--ink)}main{max-width:740px;padding-top:28px}heade
 /* Final phone workflow: quiet overview, explicit omissions, reachable save state. */
 header{padding-bottom:16px;margin-bottom:18px}.brand-line{margin-bottom:10px}.save-state{margin-bottom:12px}#template-help{margin-bottom:8px}.table-wrap{margin-top:12px}.history{margin-top:4px;margin-bottom:4px}.history summary{font-size:15px}.history select{margin-bottom:12px}#duty-coverage{margin:8px 0 0;padding:9px 12px}#coverage-details{margin-top:0;scroll-margin-top:16px}#duty-checklist li[data-missing=true]{font-weight:600;color:#6f4d20}#duty-checklist li[data-missing=false]{color:#526761}#coverage-summary:focus{outline:2px solid var(--accent);outline-offset:2px}.dock-meta{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:-7px;margin-bottom:2px}.sharebar .dock-meta button{min-height:44px;padding:8px 2px;border:0;border-radius:4px;background:transparent;font-size:14px;letter-spacing:0;font-weight:600;text-align:left}.sharebar #coverage-jump{color:#775a2c;text-decoration:underline;text-underline-offset:3px}.sharebar #coverage-jump[data-coverage=complete]{color:#2e7753}.sharebar #dock-status{color:#526761;text-align:right;flex-shrink:0}.sharebar #dock-status[data-state=error]{color:#9b3026}.sharebar #dock-status[data-state=busy]{color:#775a2c}#load-warning,#status,#day-template{scroll-margin-top:16px}#photo-help{background:transparent;padding:0;margin-top:8px}.image-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}#photo-help .image-actions>*{margin:0;font-size:16px;min-height:48px;padding:9px 6px}#photo-tip{font-size:15px;margin:8px 0}#preview-warning[data-coverage=complete]{background:#edf5ee;border-color:#bad0c0;color:#28593c}#preview-check{margin:0 0 8px;font-size:16px;min-height:44px}#preview .preview-footer{padding-top:10px}html{scroll-padding-bottom:175px}main{padding-bottom:185px}
 @media print{.dock-meta,#template-controls{display:none}}
+/* Reach member controls without scrolling through the roster. */
+.quick-tools{display:flex;align-items:flex-start;gap:14px;margin-top:8px}.quick-tools>button{white-space:nowrap;min-height:48px;font-size:16px}.quick-tools details{flex:1;margin:0}.quick-tools summary{font-size:16px}.guide-body{font-size:16px;line-height:1.65}.guide-body ol{padding-left:22px}.guide-body li{margin-bottom:9px}#quick-guide[open]{position:relative}#quick-guide[open] .guide-body{margin-left:0}#people-list{padding:0;list-style:none}#people-list .people-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:12px}#people-list .member-heading{grid-column:1/-1;display:flex;justify-content:space-between;gap:8px;overflow-wrap:anywhere;font-weight:600}#people-list .member-status{font-size:14px;white-space:nowrap;font-weight:400}#people-list .people-row[data-inactive=true]{background:#edf0ed!important;border:1px dashed #9aac9f}#people-list .people-row button{font-size:16px;padding:8px 3px;min-height:44px}#people-list .member-toggle{grid-column:span 2}#people-list .member-remove{color:#9b3026}#people-list .people-color{grid-column:auto;width:100%;min-width:0}#people-count{font-size:15px;color:#526761}#people-dialog .dialog-actions{position:sticky;bottom:-20px;background:#fff;padding:12px 0;margin-bottom:0}#people-dialog .member-add{margin-bottom:18px}#people-dialog h2{margin-bottom:8px}#people-dialog p{line-height:1.6}
+@media(max-width:440px){.quick-tools{flex-wrap:wrap}.quick-tools details{min-width:135px}.quick-tools:has(details[open]){display:block}.quick-tools:has(details[open]) details{margin-top:4px}}
+@media print{.quick-tools{display:none}}
 </style></head><body><main>
 <header><div class="brand-line"><span class="brand-mark" aria-hidden="true">A</span><span>TEAM A · DAILY DUTY</span></div><h1 id="duty-title">duty</h1></header>
 <label for="date">日期</label><div class="date-row"><input type="date" id="date"><button id="today" type="button">今天</button></div><p id="full-date" class="full-date"></p>
 <details class="history"><summary>已儲存日期</summary><label for="history" class="sr-only">選擇已儲存日期</label><select id="history"><option value="">正在載入舊表…</option></select></details>
+<div class="quick-tools"><button id="people-quick" type="button" disabled>管理成員</button><details id="quick-guide"><summary>30 秒上手</summary><div class="guide-body">
+<ol><li><strong>選日期</strong>：星期五再選 GA／no GA。</li><li><strong>派工作</strong>：在 AM／PM 下拉選單加入工作；可加入多項，亦可直接輸入或修改。</li><li><strong>核對漏項</strong>：按「尚欠名額」查看未分配工作。全部必需名額有人負責，才顯示「當日工作已全部分配」。</li><li><strong>等儲存，再分享</strong>：確認「已儲存」後按「預覽及複製」，複製或分享圖片到 Signal；多張圖片要逐張處理。</li></ol>
+<p><strong>改成員</strong>：按「管理成員」新增、暫停／恢復或移除，再按「儲存名單」。只影響尚未儲存的新日期；舊表不變。暫停不設到期日，要手動恢復。只請假一天，請在當天選「On leave」。</p>
+<p>pm WR 可重複分派；On leave、Post call off、If ERCP 不計入必需名額。工作核對不會判斷同事能否同時兼任。離開前請確認儲存成功；未儲存時強制關閉可能遺失修改。</p>
+</div></details></div>
 <div id="status" class="save-state" role="status" aria-live="polite" data-state="busy">正在連接…</div>
 <div id="load-warning" class="notice error" role="alert" hidden><strong id="error-title">儲存尚未確認</strong><span id="error-detail"></span><button id="retry" class="wide" type="button">再試一次</button><button id="recover-edit" class="wide" type="button" hidden>核對雲端並返回修改</button></div>
 <div id="fatal" role="alert" hidden>請用完整的私密連結開啟值班表。</div>
@@ -43,7 +52,7 @@ header{padding-bottom:16px;margin-bottom:18px}.brand-line{margin-bottom:10px}.sa
 <div class="sharebar"><div class="sharebar-inner"><div class="dock-meta"><button id="coverage-jump" type="button" aria-controls="coverage-details" disabled>核對工作</button><button id="dock-status" type="button" data-state="busy" aria-label="查看儲存狀態">連接中…</button></div><button id="preview-open" class="primary wide" type="button" disabled>預覽及複製</button></div></div>
 <dialog id="confirm" aria-labelledby="confirm-title"><h2 id="confirm-title"></h2><p id="confirm-text"></p><div class="dialog-actions"><button id="confirm-cancel" type="button">取消</button><button id="confirm-ok" type="button" class="primary">繼續</button></div></dialog>
 
-<dialog id="people-dialog" aria-labelledby="people-title"><h2 id="people-title">管理名單</h2><p>名單次序只用於新日期；底色套用至各日期。</p><ul id="people-list"></ul><label for="people-name">新增姓名</label><input id="people-name" maxlength="40" autocomplete="off"><button id="people-add" type="button" class="wide">新增</button><p id="people-state" role="status" aria-live="polite"></p><div class="dialog-actions"><button id="people-save" class="primary" type="button">儲存名單</button><button id="people-recover" type="button" hidden>核對雲端並返回修改</button><button id="people-reload" type="button" hidden>載入最新名單</button><button id="people-close" type="button">取消</button></div></dialog>
+<dialog id="people-dialog" aria-labelledby="people-title"><h2 id="people-title">管理成員</h2><p>名單只用於未儲存的新日期，舊表不變。暫停後可隨時恢復；底色套用至各日期。</p><div class="member-add"><label for="people-name">新增姓名</label><input id="people-name" maxlength="40" autocomplete="off" placeholder="輸入新同事姓名"><button id="people-add" type="button" class="wide">新增</button></div><p id="people-count" role="status"></p><ul id="people-list"></ul><p id="people-state" role="status" aria-live="polite"></p><div class="dialog-actions"><button id="people-save" class="primary" type="button">儲存名單</button><button id="people-recover" type="button" hidden>核對雲端並返回修改</button><button id="people-reload" type="button" hidden>載入最新名單</button><button id="people-close" type="button">取消</button></div></dialog>
 <dialog id="preview" aria-labelledby="preview-title"><button id="preview-close" type="button">返回修改</button><h2 id="preview-title">預覽值班表</h2><p id="preview-date"></p>
 
 <p id="preview-warning"></p><button id="preview-check" type="button" class="secondary" hidden>返回核對尚欠工作</button><div id="image-pages" hidden><button id="image-prev" type="button">上一張</button><span id="image-count"></span><button id="image-next" type="button">下一張</button></div><img id="image" alt="值班表圖片預覽">
@@ -166,7 +175,7 @@ function update(){
  leaveButtons.forEach(({button,field})=>{button.disabled=!canEdit();const leave=isLeave(field.value);button.value=leave?'leave':'';field.hidden=false;field.closest('td').dataset.leave=String(leave);fit(field);});
  $('completion').textContent='已填 '+all.filter(el=>el.value.trim()).length+' / '+all.length+' 格';
  $('undo').disabled=!canEdit()||!S.undo.length;
- $('people-open').disabled=!S.record||busy||S.phase==='error'||S.phase==='conflict';
+ $('people-open').disabled=!S.record||busy||S.phase==='error'||S.phase==='conflict';$('people-quick').disabled=$('people-open').disabled;
  $('preview-open').disabled=!S.record||busy||S.phase==='error'||S.phase==='conflict';
  const past=!!S.date&&S.date<nowDate();$('date-notice').hidden=!past;$('notice-title').textContent=fullDate(S.date||nowDate());$('edit-past').textContent=S.pastEditing?'完成修改':'修改這天';$('edit-past').disabled=busy||S.phase!=='ready';
  $('use-mine').hidden=!!S.conflict&&JSON.stringify(Object.keys(S.conflict.duties))!==JSON.stringify(NAMES);
@@ -314,8 +323,8 @@ $('preview-close').onclick=()=>$('preview').close();$('preview').onclose=()=>{pr
 $('copy-image').onclick=async()=>{if(!previewFile)return;try{if(!navigator.clipboard?.write||!window.ClipboardItem)throw Error('Image clipboard unavailable');await navigator.clipboard.write([new ClipboardItem({'image/png':previewFile})]);$('share-state').textContent='已複製';}catch(e){$('photo-help').hidden=false;$('photo-tip').hidden=false;$('share-state').textContent='未能自動複製';}};
 $('share').onclick=async()=>{if(!previewFile)return;try{if(navigator.share&&navigator.canShare?.({files:[previewFile]})){await navigator.share({files:[previewFile]});$('share-state').textContent='分享選單已關閉';return;}}catch(e){if(e.name==='AbortError'){$('share-state').textContent='已取消分享';return;}}$('photo-help').hidden=false;$('share-state').textContent='未能直接分享，可儲存圖片。';};
 // Template editor is separate from the selected date and never rewrites it.
-const P={base:null,names:[],colors:{},req:null,busy:false,conflict:false};
-function peopleDirty(){return $('people-dialog').open&&P.base&&(!!$('people-name').value.trim()||JSON.stringify(P.names)!==JSON.stringify(P.base.names)||JSON.stringify(P.colors)!==JSON.stringify(P.base.colors||{}));}
+const P={base:null,names:[],colors:{},inactive:[],req:null,busy:false,conflict:false};
+function peopleDirty(){return $('people-dialog').open&&P.base&&(!!$('people-name').value.trim()||JSON.stringify(P.names)!==JSON.stringify(P.base.names)||JSON.stringify(P.colors)!==JSON.stringify(P.base.colors||{})||JSON.stringify(P.inactive)!==JSON.stringify(P.base.inactive||[]));}
 function peopleState(message){$('people-state').textContent=message;}
 function peopleControls(){
  const locked=P.busy||!!P.req||P.conflict||!P.base;
@@ -327,15 +336,19 @@ function peopleControls(){
  document.querySelectorAll('#people-list button').forEach(b=>b.disabled=locked||b.dataset.edge==='true');
 }
 function renderPeople(){
- $('people-list').replaceChildren();
+ $('people-list').replaceChildren();$('people-count').textContent='參與 '+(P.names.length-P.inactive.length)+' 人 · 暫停 '+P.inactive.length+' 人';
  P.names.forEach((name,i)=>{
-  const li=document.createElement('li');li.className='people-row';const text=document.createElement('span');text.textContent=name;li.append(text);li.style.background=PALETTE[P.colors[name]||'blue'].fill;
-  for(const [label,delta] of [['上移',-1],['下移',1],['刪除',0]]){
-   const b=document.createElement('button');b.type='button';b.textContent=label;b.setAttribute('aria-label',name+' '+label);b.dataset.edge=String(delta!==0&&(i+delta<0||i+delta>=P.names.length));
+  const li=document.createElement('li');li.className='people-row';li.dataset.inactive=String(P.inactive.includes(name));const text=document.createElement('span');text.className='member-heading';text.textContent=name;const badge=document.createElement('span');badge.className='member-status';badge.textContent=P.inactive.includes(name)?'已暫停':'參與排班';text.append(badge);li.append(text);li.style.background=PALETTE[P.colors[name]||'blue'].fill;
+  for(const [label,delta] of [['暫停',2],['移除',0],['上移',-1],['下移',1]]){
+   const b=document.createElement('button');b.type='button';const action=delta===2&&P.inactive.includes(name)?'恢復':label;b.textContent=action;b.setAttribute('aria-label',name+' '+action);b.className=delta===2?'member-toggle':delta===0?'member-remove':'';b.dataset.edge=String(Math.abs(delta)===1&&(i+delta<0||i+delta>=P.names.length));
    b.onclick=async()=>{
     if(P.busy||P.req||P.conflict)return;
-    if(delta){[P.names[i],P.names[i+delta]]=[P.names[i+delta],P.names[i]];}
-    else{if(P.names.length===1){peopleState('最少保留一人。');return;}if(!await ask('從新日期名單刪除 '+name+'？','舊表內的姓名和安排會保留。儲存名單後，新日期才會生效。','刪除姓名'))return;P.names.splice(i,1);delete P.colors[name];}
+    if(delta===2){
+     if(P.inactive.includes(name))P.inactive=P.inactive.filter(n=>n!==name);
+     else{if(P.names.length-P.inactive.length<=1){peopleState('最少保留一位參與排班的成員。');return;}P.inactive.push(name);}
+    }else if(delta){[P.names[i],P.names[i+delta]]=[P.names[i+delta],P.names[i]];}
+    else{if(P.names.length===1||(!P.inactive.includes(name)&&P.names.length-P.inactive.length<=1)){peopleState('最少保留一位參與排班的成員。');return;}if(!await ask('從新日期名單移除 '+name+'？','如果只是暫時離隊，請取消並改按「暫停」。移除後如要加回須重新新增；舊表內的姓名和安排會保留。','移除成員'))return;P.names.splice(i,1);P.inactive=P.inactive.filter(n=>n!==name);delete P.colors[name];}
+    P.inactive=P.names.filter(n=>P.inactive.includes(n));
     peopleState('修改尚未儲存。');renderPeople();
    };li.append(b);
   }
@@ -344,11 +357,13 @@ function renderPeople(){
 }
 async function loadPeople(){
  P.busy=true;peopleState('正在載入名單…');peopleControls();
- try{P.base=await rpc('getPeople');P.names=clone(P.base.names);P.colors=clone(P.base.colors||Object.fromEntries(P.names.map(n=>[n,['Raiden','Vikki','Tony','Cindy'].includes(n)?'rose':['Selina','Selena','Victor','Harry'].includes(n)?'purple':'blue'])));P.base.colors=clone(P.colors);P.req=null;P.conflict=false;peopleState('');renderPeople();}
+ try{P.base=await rpc('getPeople');P.names=clone(P.base.names);P.inactive=clone(P.base.inactive||[]);P.colors=clone(P.base.colors||Object.fromEntries(P.names.map(n=>[n,['Raiden','Vikki','Tony','Cindy'].includes(n)?'rose':['Selina','Selena','Victor','Harry'].includes(n)?'purple':'blue'])));P.base.colors=clone(P.colors);P.req=null;P.conflict=false;peopleState('');renderPeople();}
  catch(e){peopleState('暫時未能載入，請按「載入最新名單」重試。');}
  finally{P.busy=false;peopleControls();}
 }
-$('people-open').onclick=async()=>{if(!await flush())return;P.base=null;P.names=[];P.colors={};P.conflict=false;$('people-name').value='';renderPeople();$('people-dialog').showModal();await loadPeople();};
+$('people-open').onclick=async()=>{if(!await flush())return;P.base=null;P.names=[];P.colors={};P.inactive=[];P.conflict=false;$('people-name').value='';renderPeople();$('people-dialog').showModal();await loadPeople();};
+$('people-quick').onclick=()=>$('people-open').click();
+$('people-name').onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();$('people-add').click();}};
 $('people-name').oninput=()=>peopleControls();
 $('people-add').onclick=()=>{
  if(P.busy||P.req||P.conflict)return;
@@ -361,19 +376,19 @@ $('people-add').onclick=()=>{
 $('people-save').onclick=async()=>{
  if(P.busy||P.conflict||!P.base)return;
  if($('people-name').value.trim()){peopleState('請先按「新增」，或清空新增姓名。');return;}
- if(!P.req)P.req={expectedRevision:P.base.revision,requestId:requestId(),names:clone(P.names),colors:clone(P.colors)};
+ if(!P.req)P.req={expectedRevision:P.base.revision,requestId:requestId(),names:clone(P.names),colors:clone(P.colors),inactive:clone(P.inactive)};
  P.busy=true;peopleState('正在儲存名單…');peopleControls();
  try{
   const r=await rpc('savePeople',P.req);P.req=null;
   if(!r.ok){P.conflict=true;peopleState('另一人剛修改了名單。你的草稿仍在；請載入最新名單再修改。');return;}
-  P.base=r.people;P.names=clone(r.people.names);P.colors=clone(r.people.colors||P.colors);nameColors=clone(P.colors);applyNameColors();$('people-dialog').close();say('名單及底色已儲存；舊表的姓名及安排不變。');
+  P.base=r.people;P.names=clone(r.people.names);P.inactive=clone(r.people.inactive||[]);P.colors=clone(r.people.colors||P.colors);nameColors=clone(P.colors);applyNameColors();$('people-dialog').close();say('名單及底色已儲存；舊表的姓名及安排不變。');
   if(S.record.revision===0&&!S.dirty){await load(S.date);say('名單已儲存，新日期已使用最新名單。');}
  }catch(e){peopleState('儲存尚未確認。請保留此頁，按「再試儲存」；會用同一要求確認，不會重複新增。');}
  finally{P.busy=false;$('people-save').textContent=P.req?'再試儲存':'儲存名單';peopleControls();}
 };
-async function closePeople(){if(P.busy||P.req)return;if(peopleDirty()&&!await ask('放棄未儲存的名單修改？','值班表及已儲存名單不會改動。','放棄修改'))return;$('people-dialog').close();}
+async function closePeople(){if(P.busy||P.req)return;if(peopleDirty()&&!await ask('放棄未儲存的名單修改？','值班表及已儲存名單不會改動。','放棄修改'))return;$('people-dialog').close();if(P.base){nameColors=clone(P.base.colors||{});applyNameColors();if(S.record?.revision===0&&!S.dirty)await load(S.date);}}
 $('people-recover').onclick=async()=>{if(P.busy||!P.req)return;P.busy=true;peopleControls();
- try{const remote=await rpc('getPeople');const same=JSON.stringify(remote.names)===JSON.stringify(P.req.names)&&JSON.stringify(remote.colors||{})===JSON.stringify(P.req.colors||{});
+ try{const remote=await rpc('getPeople');const same=JSON.stringify(remote.names)===JSON.stringify(P.req.names)&&JSON.stringify(remote.colors||{})===JSON.stringify(P.req.colors||{})&&JSON.stringify(remote.inactive||[])===JSON.stringify(P.req.inactive||[]);
  if(remote.revision!==P.base.revision&&!same){P.req=null;P.conflict=true;peopleState('雲端名單已有修改，請載入最新名單後再修改。');}
  else{P.base=remote;P.req=null;P.conflict=false;peopleState('已核對雲端。你的草稿保留，可繼續修改或取消。');$('people-save').textContent='儲存名單';}
  }catch(e){peopleState('暫時未能核對雲端。草稿仍保留，請稍後再試。');}finally{P.busy=false;peopleControls();}};
