@@ -38,9 +38,10 @@ main{padding-top:max(10px,env(safe-area-inset-top));padding-bottom:180px}header{
 main{padding-bottom:148px}.page-nav{grid-template-columns:1fr auto 1fr auto;gap:5px}.page-nav #undo{font-size:14px;min-width:48px;padding:6px}.page-nav span{min-width:42px}#message:not(:empty){position:fixed;left:16px;right:16px;bottom:148px;max-width:660px;margin:0 auto;padding:7px 10px;font-size:14px;background:#fff9e8;border:1px solid #d6c38a;border-radius:6px;z-index:5;pointer-events:none}
 #cell-dialog{width:min(620px,calc(100vw - 24px));max-height:90dvh;overflow:auto}#cell-editor{width:100%;height:55dvh;min-height:180px;padding:12px;font-size:18px;line-height:1.6;border:1px solid #aabfb2;border-radius:7px}#cell-dialog p{font-size:14px;color:#526761}
 header{position:relative}header .brand-line{min-height:44px;padding-right:110px}#utility-open{position:absolute;top:0;right:0;min-height:44px;padding:8px 10px;font-size:15px;background:transparent;border:1px solid #bbcec4}#utility-dialog{max-height:90dvh;overflow:auto}#utility-dialog .quick-tools{display:flex;flex-direction:column;align-items:stretch;gap:14px}#utility-dialog #people-quick{width:100%;font-size:17px;min-height:48px}#utility-dialog #quick-guide summary{font-size:17px;min-height:44px;padding:10px 0;box-sizing:border-box}
+#daily-notice{margin:14px 0;padding:12px;border:1px solid #bbcec4;border-radius:9px;background:#f5f8f5}#daily-notice dl{display:grid;grid-template-columns:115px minmax(0,1fr);gap:9px;margin:10px 0;font-size:17px}#daily-notice dt{font-weight:650}#daily-notice dd{margin:0;overflow-wrap:anywhere}#notice-opd-details{font-size:16px;padding-left:22px}#notice-state{font-size:14px;color:#526761}
 </style></head><body><main>
 <header><div class="brand-line"><span class="brand-mark" aria-hidden="true">A</span><span>TEAM A · DAILY DUTY</span></div><button id="utility-open" type="button" aria-haspopup="dialog" aria-controls="utility-dialog">管理／說明</button><h1 id="duty-title">duty</h1></header>
-<button id="setup-open" type="button" class="setup-summary"><span>日期及 Call 安排</span><small id="call-summary">正在載入…</small></button>
+<button id="setup-open" type="button" class="setup-summary"><span>每日告示板／日期及 Call</span><small id="call-summary">正在載入…</small></button>
 <div id="status" class="save-state" role="status" aria-live="polite" data-state="busy">正在連接…</div>
 <div id="load-warning" class="notice error" role="alert" hidden><strong id="error-title">儲存尚未確認</strong><span id="error-detail"></span><button id="retry" class="wide" type="button">再試一次</button><button id="recover-edit" class="wide" type="button" hidden>核對雲端並返回修改</button></div>
 <div id="fatal" role="alert" hidden>請用完整的私密連結開啟值班表。</div>
@@ -61,6 +62,7 @@ header{position:relative}header .brand-line{min-height:44px;padding-right:110px}
 <dialog id="coverage-dialog"><div class="dialog-top"><h2>每日工作核對</h2><button id="coverage-close" type="button">返回安排</button></div><p id="coverage-dialog-date"></p><ul id="duty-checklist"></ul></dialog>
 <dialog id="setup-dialog"><div class="dialog-top"><h2>日期及 Call 安排</h2><button id="setup-close" type="button">完成</button></div><label for="date">日期</label><div class="date-row"><input type="date" id="date"><button id="today" type="button">今天</button></div><p id="full-date" class="full-date"></p>
 <details class="history"><summary>已儲存日期</summary><label for="history" class="sr-only">選擇已儲存日期</label><select id="history"><option value="">正在載入舊表…</option></select></details>
+<section id="daily-notice" aria-labelledby="notice-title-heading"><h2 id="notice-title-heading">每日告示板</h2><dl><dt>Day call</dt><dd id="notice-day"></dd><dt>Overnight call</dt><dd id="notice-overnight"></dd><dt>On leave</dt><dd id="notice-leave"></dd><dt>OPD 病人人次</dt><dd id="notice-opd"></dd></dl><ul id="notice-opd-details"></ul><p id="notice-state"></p><p class="call-note">OPD 人數填在工作欄，例如「OPD 28」；只填 OPD 會保留為人數未填。</p></section>
 <section class="call-panel" aria-labelledby="call-heading"><h2 id="call-heading">Call 安排</h2><div id="week-call-controls"><label id="week-call-label" for="week-call">本週 Day call</label><select id="week-call"><option value="">本週沒有 Day call</option></select><p id="week-call-status" role="status" aria-live="polite">星期一至五全日；取消後還原原有安排。</p><div id="week-call-actions" hidden><button id="week-call-retry" type="button">再試儲存</button><button id="week-call-recover" type="button">核對最新設定</button></div></div>
 <div class="overnight-row"><label for="overnight-call">Overnight call</label><select id="overnight-call" aria-describedby="overnight-help"><option value="">＋ 加入同事</option></select></div><div id="overnight-people"></div><p class="call-note" id="overnight-help">可選多人；不改當日工作，翌日 PM 自動 Post call off。</p></section><label id="template-label" for="day-template">當日工作模板</label><select id="day-template" aria-describedby="template-help"></select><p id="template-help" style="font-size:15px">星期五請選 GA／no GA；只核對所選模板，不改動已有安排。</p><label for="page-size">每頁顯示</label><select id="page-size"><option value="2">2 位同事（建議）</option><option value="1">1 位同事</option><option value="all">全員（需要上下捲動）</option></select></dialog>
 <dialog id="utility-dialog" aria-labelledby="utility-title"><div class="dialog-top"><h2 id="utility-title">管理及說明</h2><button id="utility-close" type="button">返回工作表</button></div><div class="quick-tools"><button id="people-quick" type="button" disabled>管理成員</button><details id="quick-guide"><summary>30 秒上手</summary><div class="guide-body">
@@ -100,6 +102,33 @@ const draftMatches=r=>sameRecord({duties:values(),template:templateValue(),overn
 const undoSnapshot=()=>({duties:clone(values()),overnightCalls:overnightValue()});
 let activePeople=[];
 const normalizeDuty=s=>s.trim().replace(/\s+/g,' ').toLowerCase();
+// 只整理明確填寫的安排；沒有 OPD 人數時不作估算。
+function opdLine(line){
+ const text=line.trim();if(/^OPD$/i.test(text))return {count:null};
+ const m=text.match(/^OPD\s*(?:[:：]\s*)?(?:(\d{1,6})\s*(?:人次|人|patients?)?|[（(]\s*(\d{1,6})\s*(?:人次|人|patients?)?\s*[）)])$/i);
+ if(m)return {count:Number(m[1]??m[2])};
+ return /^OPD(?:\s*[:：(（]|\s+-?\d)/i.test(text)?{count:null}:null;
+}
+function noticeData(){
+ const day=[],leave=[],opd=[];
+ NAMES.forEach((name,i)=>{
+  const pair=fields[i]||[],periods=predicate=>pair.flatMap((el,j)=>el.value.split('\n').some(predicate)?[j===0?'AM':'PM']:[]);
+  const tag=ps=>name+(ps.length===2?' 全日':' '+ps.join('/'));
+  const calls=periods(line=>normalizeDuty(line)==='day call');if(calls.length)day.push(tag(calls));
+  const off=periods(line=>['leave','on leave'].includes(normalizeDuty(line)));if(off.length)leave.push(tag(off));
+  pair.forEach((el,j)=>{const entries=el.value.split('\n').map(opdLine).filter(Boolean);if(entries.length)opd.push({name,period:j===0?'AM':'PM',count:entries.length===1?entries[0].count:null});});
+ });
+ const unknown=opd.filter(x=>x.count===null).length,total=opd.reduce((sum,x)=>sum+(x.count??0),0);
+ return {day,leave,overnight:overnightValue(),opd,total,unknown};
+}
+function opdSummary(n){return !n.opd.length?'未列 OPD':(n.unknown===n.opd.length?'人數未填':(n.unknown?'已填 ':'')+n.total+' 人次')+(n.unknown?'（'+n.unknown+' 節未填）':'');}
+function noticeLines(n){return ['Day call: '+(n.day.join('、')||'未列'),'Overnight call: '+(n.overnight.join('、')||'未列'),'On leave: '+(n.leave.join('、')||'未列'),'OPD: '+opdSummary(n)];}
+function updateNotice(){
+ const n=noticeData();$('call-summary').textContent=noticeLines(n).join(' · ');
+ for(const [id,text] of [['notice-day',n.day.join('、')||'未列'],['notice-overnight',n.overnight.join('、')||'未列'],['notice-leave',n.leave.join('、')||'未列'],['notice-opd',opdSummary(n)]])$(id).textContent=text;
+ $('notice-opd-details').replaceChildren();n.opd.forEach(x=>{const li=document.createElement('li');li.textContent=x.name+' '+x.period+'：'+(x.count===null?'人數未填':x.count+' 人次');$('notice-opd-details').append(li);});
+ $('notice-state').textContent=S.phase==='loading'?'正在載入…':S.phase==='error'||S.phase==='conflict'?'儲存／版本尚待確認':S.dirty||S.phase==='saving'?'包含尚未確認儲存的修改':'按目前工作表整理；OPD 按 AM／PM 節數合計人次。';
+}
 function setupTemplate(){
  const day=new Date(S.date+'T12:00:00Z').getUTCDay();
  selectedTemplate=day===5?(S.record.template||''):(({1:'mon',2:'tue',3:'wed',4:'thu'})[day]||'');
@@ -125,11 +154,11 @@ function coverageResult(){
  const template=DUTY_TEMPLATES[selectedTemplate];if(!template)return null;
  return Object.entries(template).map(([label,count])=>{
   let needed=count;
-  if(label==='Day call'){const assigned=S.week.person?[S.week.person+' 全日']:[];return {label,needed:assigned.length,assigned,remaining:0};}
+  if(label==='Day call'){const assigned=noticeData().day;return {label,needed:assigned.length,assigned,remaining:0};}
   const assigned=NAMES.flatMap((name,i)=>fields[i].flatMap((el,j)=>{
    if(label==='OPD'&&((selectedTemplate==='tue'&&j!==0)||(selectedTemplate==='thu'&&j!==1)))return [];
    if((/\(am\)|\bam$/i.test(label)&&j!==0)||(/\(pm\)|\bpm$/i.test(label)&&j!==1))return [];
-   return el.value.split('\n').some(line=>normalizeDuty(line)===normalizeDuty(label))?[name+' '+(j===0?'AM':'PM')]:[];
+   return el.value.split('\n').some(line=>(label==='OPD'?opdLine(line)!==null:normalizeDuty(line)===normalizeDuty(label)))?[name+' '+(j===0?'AM':'PM')]:[];
   }));
   if(label==='OPD'&&['tue','thu'].includes(selectedTemplate))needed=assigned.length;
   return {label,needed,assigned,remaining:Math.max(0,needed-assigned.length)};
@@ -273,7 +302,7 @@ async function rpc(name,...args){
 }
 function canEdit(){return !!S.record&&!W.busy&&!W.req&&!S.previewing&&!['loading','error','conflict'].includes(S.phase)&&!S.importing&&(S.date>=nowDate()||S.pastEditing);}
 function update(){
- updateCoverage();updateFilter();updateWeekControls();if(zoomTarget)$('cell-editor').readOnly=!canEdit()||lockedField(zoomTarget);$('call-summary').textContent='Day call: '+(S.week.person||'—')+' · Overnight: '+(selectedOvernight.length?selectedOvernight.join('、'):'—');$('setup-open').disabled=S.phase==='loading'||S.previewing; 
+ updateCoverage();updateFilter();updateWeekControls();if(zoomTarget)$('cell-editor').readOnly=!canEdit()||lockedField(zoomTarget);updateNotice();$('setup-open').disabled=S.phase==='loading'||S.previewing; 
  const busy=W.busy||!!W.req||S.phase==='loading'||S.phase==='saving'||S.importing||S.previewing;
  $('date').disabled=busy||S.phase==='conflict';$('today').disabled=busy||S.phase==='conflict';$('history').disabled=busy||S.phase==='conflict'||S.phase==='error';$('date').disabled||=S.phase==='error';$('today').disabled||=S.phase==='error';
  all.forEach(el=>{el.readOnly=!canEdit()||lockedField(el);el.closest('td').dataset.daycall=String(lockedField(el));el.closest('td').dataset.filled=String(!!el.value.trim());el.title=el.value.trim()?'已有安排，可按需要修改':'尚未填寫';});
@@ -389,7 +418,7 @@ function makeImages(){
  const c=document.createElement('canvas'),g=c.getContext('2d');if(!g)throw Error('Canvas unavailable');
  const widths=[214,140,646],font='30px Arial,sans-serif';g.font=font;
  function wrap(s,w){const out=[];let line='';for(const ch of Array.from(s.trim()||'—')){if(ch==='\n'){out.push(line);line='';}else if(line&&g.measureText(line+ch).width>w){out.push(line);line=ch;}else line+=ch;}out.push(line);return out;}
- const callLines=[...wrap('Day call: '+(S.week.person||'—'),936),...wrap('Overnight call: '+(overnightValue().join(', ')||'—'),936)],callHeight=callLines.length*40+32,maxUnits=Math.max(4,Math.floor((3600-296-callHeight)/40));
+ const callLines=noticeLines(noticeData()).flatMap(line=>wrap(line,936)),callHeight=callLines.length*40+32,maxUnits=Math.max(4,Math.floor((3600-296-callHeight)/40));
  const pages=[];let page=[],used=0;
  function nextPage(){if(page.length)pages.push(page);page=[];used=0;}
  NAMES.forEach((name,i)=>{
